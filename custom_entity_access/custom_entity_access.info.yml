@@ -1,0 +1,7 @@
+name: 'Custom Entity Access'
+type: module
+description: 'Custom entity access handling.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Custom Entity'
+dependencies: { }
