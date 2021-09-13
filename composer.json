@@ -1,0 +1,17 @@
+{
+  "name": "unb-libraries/custom-entity",
+  "description": "A collection of Drupal modules to ease working with custom entities.",
+  "type": "drupal-module",
+  "require": {},
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Patrick Schilf",
+      "email": "pschilf@unb.ca"
+    },
+    {
+      "name": "UNB Libraries",
+      "email": "libsupport@unb.ca"
+    }
+  ]
+}
