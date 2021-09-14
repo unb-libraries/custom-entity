@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_entity_access\Entity\Access;
+namespace Drupal\custom_entity\Entity\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityAccessControlHandler as DefaultEntityAccessControlHandler;
