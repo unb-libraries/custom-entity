@@ -1,0 +1,5 @@
+services:
+  entity_revisions.list_builder.factory:
+    class: Drupal\custom_entity_revisions\Entity\EntityRevisionsListBuilderFactory
+    arguments:
+      - '@entity_type.manager'
