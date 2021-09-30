@@ -4,6 +4,7 @@ namespace Drupal\custom_entity_revisions\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\custom_entity_revisions\Entity\EntityRevisionsListBuilderFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,7 +52,7 @@ class EntityRevisionsListController extends ControllerBase {
   }
 
   /**
-   * Provides a generic title callback for a single entity.
+   * Provides a generic title callback for a list of entity revisions.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
@@ -61,7 +62,7 @@ class EntityRevisionsListController extends ControllerBase {
    * @return string|null
    *   The title for the entity view page, if an entity was found.
    */
-  public function getTitle(RouteMatchInterface $route_match, EntityInterface $_entity = NULL) {
+  public function listTitle(RouteMatchInterface $route_match, EntityInterface $_entity = NULL) {
     if ($entity = $this->doGetEntity($route_match, $_entity)) {
       return $this->t('@entity revisions', [
         '@entity' => $entity->label(),
@@ -87,6 +88,41 @@ class EntityRevisionsListController extends ControllerBase {
       ->listBuilderFactory()
       ->createInstance($entity)
       ->render();
+  }
+
+  /**
+   * Provides a generic title callback for a single entity revision.
+   *
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match.
+   * @param \Drupal\Core\Entity\EntityInterface $_entity
+   *   (optional) An entity, passed in directly from the request attributes.
+   *
+   * @return string|null
+   *   The title for the entity view page, if an entity was found.
+   */
+  public function title(RouteMatchInterface $route_match, EntityInterface $_entity = NULL) {
+    if ($entity = $this->doGetEntity($route_match, $_entity)) {
+      return $this->t('@entity (revision)', [
+        '@entity' => $entity->label(),
+      ]);
+    }
+  }
+
+  /**
+   * Render a single entity revision.
+   *
+   * @param \Drupal\Core\Entity\RevisionableInterface $_entity_revision
+   *   The entity revision.
+   *
+   * @return array
+   *   The rendered entity view.
+   */
+  public function view(RevisionableInterface $_entity_revision) {
+    return $this
+      ->entityTypeManager()
+      ->getViewBuilder($_entity_revision->getEntityTypeId())
+      ->view($_entity_revision);
   }
 
   /**
