@@ -2,10 +2,13 @@
 
 namespace Drupal\custom_entity_revisions\Entity;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\custom_entity\Entity\UserEditedInterface;
 
 /**
  * Builds a list of entity revisions.
@@ -56,9 +59,19 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
    * {@inheritDoc}
    */
   public function buildHeader() {
-    return [
+    $header = [
       'rid' => $this->t('Revision ID'),
-    ] + parent::buildHeader();
+    ];
+
+    if (is_callable([$this->getEntity(), 'getEditedTime'])) {
+      $header['edited'] = $this->t('Edited');
+    }
+
+    if (is_callable([$this->getEntity(), 'getEditor'])) {
+      $header['editor'] = $this->t('Editor');
+    }
+
+    return $header + parent::buildHeader();
   }
 
   /**
@@ -69,9 +82,20 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
     $revision = $entity;
 
     // @todo Add class to highlight default revision.
-    return [
+    $row = [
       'rid' => $revision->getRevisionId(),
-    ] + parent::buildRow($entity);
+    ];
+
+    if (is_callable([$revision, 'getEditedTime'])) {
+      $row['edited'] = DrupalDateTime::createFromTimestamp($revision->getEditedTime())->format('Y-m-d H:i');
+    }
+
+    if (is_callable([$revision, 'getEditor'])) {
+      $editor = $revision->getEditor();
+      $row['editor'] = Link::fromTextAndUrl($editor->label(), $editor->toUrl());
+    }
+
+    return $row + parent::buildRow($entity);
   }
 
   /**
