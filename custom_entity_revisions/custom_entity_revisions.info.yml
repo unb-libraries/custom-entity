@@ -1,0 +1,7 @@
+name: 'Custom Entity Revisions'
+type: module
+description: 'A collection of components to ease working with custom entity revisions.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Custom Entity'
+dependencies: { }

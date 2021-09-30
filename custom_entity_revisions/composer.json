@@ -1,0 +1,17 @@
+{
+  "name": "unb-libraries/custom-entity-revisions",
+  "description": "A collection of Drupal components to ease working with custom entity revisions.",
+  "type": "drupal-module",
+  "require": {},
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Patrick Schilf",
+      "email": "pschilf@unb.ca"
+    },
+    {
+      "name": "UNB Libraries",
+      "email": "libsupport@unb.ca"
+    }
+  ]
+}
