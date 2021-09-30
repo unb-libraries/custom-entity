@@ -26,6 +26,7 @@ trait RevisionsRouteProviderTrait {
       $route
         ->addDefaults([
           '_controller' => EntityRevisionsListController::class . '::listing',
+          '_title_callback' => EntityRevisionsListController::class . '::getTitle',
         ])
         ->setRequirements([
           '_permission' => "list {$entity_type->id()} revisions",
