@@ -75,6 +75,28 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
   /**
    * {@inheritDoc}
    */
+  protected function getDefaultOperations(EntityInterface $entity) {
+    /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
+    $revision = $entity;
+
+    // @todo Refactor revision access checking.
+    $account = \Drupal::currentUser();
+    $operations = [];
+
+    if ($account->hasPermission("view {$revision->getEntityTypeId()} revisions") && $revision->hasLinkTemplate('revision')) {
+      $operations['view'] = [
+        'title' => $this->t('View'),
+        'weight' => 10,
+        'url' => $this->ensureDestination($revision->toUrl('revision')),
+      ];
+    }
+
+    return $operations;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public function render() {
     $table = parent::render();
 
