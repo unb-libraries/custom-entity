@@ -29,6 +29,13 @@ trait RevisionsRouteProviderTrait {
         ])
         ->setRequirements([
           '_permission' => "list {$entity_type->id()} revisions",
+        ])
+        ->setOptions([
+          'parameters' => [
+            $entity_type->id() => [
+              'type' => 'entity:' . $entity_type->id(),
+            ],
+          ],
         ]);
 
       return $route;
