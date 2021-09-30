@@ -5,6 +5,7 @@ namespace Drupal\custom_entity_revisions\Entity;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Url;
 
 /**
  * Builds a list of entity revisions.
@@ -67,6 +68,7 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
     /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
     $revision = $entity;
 
+    // @todo Add class to highlight default revision.
     return [
       'rid' => $revision->getRevisionId(),
     ] + parent::buildRow($entity);
@@ -83,12 +85,27 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
     $account = \Drupal::currentUser();
     $operations = [];
 
-    if ($account->hasPermission("view {$revision->getEntityTypeId()} revisions") && $revision->hasLinkTemplate('revision')) {
-      $operations['view'] = [
-        'title' => $this->t('View'),
-        'weight' => 10,
-        'url' => $this->ensureDestination($revision->toUrl('revision')),
-      ];
+    if (!$revision->isDefaultRevision()) {
+      if ($account->hasPermission("view {$revision->getEntityTypeId()} revisions") && $revision->hasLinkTemplate('revision')) {
+        $operations['view'] = [
+          'title' => $this->t('View'),
+          'weight' => 10,
+          'url' => $revision->toUrl('revision', [
+            'schedule_revision' => $revision,
+          ]),
+        ];
+      }
+
+      if ($account->hasPermission("restore {$revision->getEntityTypeId()} revisions") && $revision->hasLinkTemplate('revision-restore-form')) {
+        $operations['restore'] = [
+          'title' => $this->t('Restore'),
+          'weight' => 20,
+          'url' => $this->ensureDestination(Url::fromRoute("entity.{$revision->getEntityTypeId()}.revision_restore_form", [
+            $revision->getEntityTypeId() => $revision->id(),
+            $revision->getEntityTypeId() . '_revision' => $revision->getRevisionId(),
+          ])),
+        ];
+      }
     }
 
     return $operations;
@@ -101,6 +118,7 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
     $table = parent::render();
 
     // @todo Refactor the render method.
+    $table['table']['#rows'] = [];
     foreach ($this->load() as $revision) {
       if ($row = $this->buildRow($revision)) {
         $table['table']['#rows'][$revision->getRevisionId()] = $row;

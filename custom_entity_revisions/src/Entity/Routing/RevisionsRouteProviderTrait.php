@@ -34,7 +34,7 @@ trait RevisionsRouteProviderTrait {
     }
 
     if ($revision_restore_route = $this->getRevisionRestoreRoute($entity_type)) {
-      $routes->add("entity.{$entity_type->id()}.revision_restore", $revision_restore_route);
+      $routes->add("entity.{$entity_type->id()}.revision_restore_form", $revision_restore_route);
     }
 
     return $routes;
