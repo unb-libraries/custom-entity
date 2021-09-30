@@ -11,16 +11,25 @@ use Drupal\Core\Entity\RevisionableInterface;
 trait RevisionableEntityStorageTrait {
 
   /**
+   * Get the database connection.
+   *
+   * @return \Drupal\Core\Database\Connection
+   *   A connection object.
+   */
+  protected function database() {
+    return $this->database;
+  }
+
+  /**
    * {@inheritDoc}
    */
   public function loadEntityRevisions(EntityInterface $entity) {
     /** @var \Drupal\custom_entity_revisions\Entity\Storage\RevisionableEntityStorageInterface $this */
-    $database = \Drupal::database();
 
     $revision_id_key = $this->getEntityType()->getKey('revision');
     $revision_table = $this->getEntityType()->getRevisionTable();
 
-    $revision_ids = $database->query(
+    $revision_ids = $this->database->query(
       "SELECT {$revision_id_key} FROM {$revision_table} WHERE id = :entity_id", [
         ':entity_id' => $entity->id(),
       ]
@@ -34,7 +43,6 @@ trait RevisionableEntityStorageTrait {
    */
   public function loadPreviousRevision(RevisionableInterface $entity_revision) {
     /** @var \Drupal\custom_entity_revisions\Entity\Storage\RevisionableEntityStorageInterface $this */
-    $database = \Drupal::database();
 
     $entity_revision_key = $this->getEntityType()->getKey('revision');
     $revision_table = $this->getEntityType()->getRevisionTable();
@@ -53,7 +61,7 @@ trait RevisionableEntityStorageTrait {
         ORDER BY {$entity_revision_key} DESC
         LIMIT 1");
 
-    $revision_id = $database->query($query)->fetchCol();
+    $revision_id = $this->database->query($query)->fetchCol();
     var_dump($revision_id);
     if (!empty($revision_id)) {
       return $this->loadRevision($revision_id[0]);
