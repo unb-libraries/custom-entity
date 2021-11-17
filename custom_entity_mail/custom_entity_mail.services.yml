@@ -1,0 +1,14 @@
+services:
+  mailer.entity_event_subscriber:
+    class: Drupal\custom_entity_mail\EventSubscriber\EntityEventMailer
+    arguments: [ '@plugin.manager.mail' ]
+    abstract: true
+  current_request:
+    class: Symfony\Component\HttpFoundation\Request
+    factory: ['@request_stack', 'getCurrentRequest']
+    public: false
+  template_mailer.entity_event_subscriber:
+    class: Drupal\custom_entity_mail\EventSubscriber\EntityEventTemplateMailer
+    arguments: ['@current_request']
+    parent: 'mailer.entity_event_subscriber'
+    abstract: true

@@ -1,0 +1,17 @@
+{
+  "name": "unb-libraries/custom_entity_mail",
+  "description": "Send emails upon creating, editing, deleting custom entities.",
+  "type": "drupal-module",
+  "require": {},
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Patrick Schilf",
+      "email": "patrick.schilf@unb.ca"
+    },
+    {
+      "name": "UNB Libraries",
+      "email": "libsupport@unb.ca"
+    }
+  ]
+}
