@@ -38,7 +38,7 @@ trait EntityEventDispatcherTrait {
    */
   protected function dispatchSave(EntityInterface $entity, bool $is_new) {
     $this->dispatch(EntityEvents::SAVE, $entity);
-    if (!$is_new) {
+    if ($is_new) {
       $this->dispatch(EntityEvents::CREATE, $entity);
     }
     else {
