@@ -157,13 +157,32 @@ abstract class EntityEventMailer extends EntityEventSubscriber {
   protected function mail(EntityEvent $event, string $key, array $recipients, $subject = '', $body = '') {
     $entity = $event->getEntity();
     $module = $entity->getEntityType()->getProvider();
-    $lang_code = $event->getEntity()
-      ->get('langcode')->value;
-
+    $lang_code = $this->getLangcode($event->getEntity());
     $this->mailManager()->mail($module, $key, implode(',', $recipients), $lang_code, [
       'subject' => $subject,
       'body' => $body,
     ]);
+  }
+
+  /**
+   * Determine the lang code.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   An entity.
+   *
+   * @return string
+   *   If the entity is translatable and is assigned a language, return that
+   *   langcode. Otherwise return a default langcode.
+   */
+  protected function getLangcode(EntityInterface $entity) {
+    try {
+      return $entity->get('langcode')
+        ->value;
+    }
+    catch (\InvalidArgumentException $e) {
+      // @todo Load the site's default langcode.
+      return 'en';
+    }
   }
 
 }
