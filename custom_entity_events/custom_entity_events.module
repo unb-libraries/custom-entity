@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Contains custom_entity_events.module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\custom_entity_events\Event\EntityEvent;
+use Drupal\custom_entity_events\Event\EntityEvents;
+
+/**
+ * The event dispatcher.
+ *
+ * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
+ *   An event dispatcher object.
+ */
+function eventDispatcher() {
+  return Drupal::service('event_dispatcher');
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function custom_entity_events_entity_insert(EntityInterface $entity) {
+  eventDispatcher()->dispatch(new EntityEvent($entity), EntityEvents::SAVE);
+  eventDispatcher()->dispatch(new EntityEvent($entity), EntityEvents::CREATE);
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function custom_entity_events_entity_update(EntityInterface $entity) {
+  eventDispatcher()->dispatch(new EntityEvent($entity), EntityEvents::SAVE);
+  eventDispatcher()->dispatch(new EntityEvent($entity), EntityEvents::UPDATE);
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function custom_entity_events_entity_delete(EntityInterface $entity) {
+  eventDispatcher()->dispatch(new EntityEvent($entity), EntityEvents::DELETE);
+}
