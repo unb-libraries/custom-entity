@@ -1,0 +1,5 @@
+services:
+  entity.field_subscriber.collector:
+    class: Drupal\custom_entity\FieldSubscriber\FieldSubscriberCollector
+    tags:
+      - { name: 'service_collector', tag: 'field_subscriber', call: 'addFieldSubscriber' }

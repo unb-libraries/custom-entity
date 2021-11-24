@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Contains custom_entity.module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function ior_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  $field_subscribers = Drupal::service('entity.field_subscriber.collector')
+    ->getFieldSubscribers();
+  foreach ($field_subscribers as $field_subscriber) {
+    if ($field_subscriber->getEntityTypeId() === $entity_type->id()) {
+      $field_subscriber->alter($fields);
+    }
+  }
+}
