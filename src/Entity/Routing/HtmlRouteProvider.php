@@ -157,7 +157,7 @@ class HtmlRouteProvider extends DefaultHtmlRouteProvider {
    */
   protected function isSingleEntityPath(EntityTypeInterface $entity_type, $path) {
     $entity_type_id = $entity_type->id();
-    return boolval(preg_match("/.*\/{$entity_type_id}\/.*/", $path));
+    return boolval(preg_match("/.*\/\{$entity_type_id\}\/.*/", $path));
   }
 
   /**
