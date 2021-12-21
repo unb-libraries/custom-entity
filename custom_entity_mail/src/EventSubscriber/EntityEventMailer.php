@@ -158,10 +158,13 @@ abstract class EntityEventMailer extends EntityEventSubscriber {
     $entity = $event->getEntity();
     $module = $entity->getEntityType()->getProvider();
     $lang_code = $this->getLangcode($event->getEntity());
-    $this->mailManager()->mail($module, $key, implode(',', $recipients), $lang_code, [
-      'subject' => $subject,
-      'body' => $body,
-    ]);
+
+    foreach ($recipients as $recipient) {
+      $this->mailManager()->mail($module, $key, $recipient, $lang_code, [
+        'subject' => $subject,
+        'body' => $body,
+      ]);
+    }
   }
 
   /**
