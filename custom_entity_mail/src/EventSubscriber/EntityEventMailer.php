@@ -155,12 +155,9 @@ abstract class EntityEventMailer extends EntityEventSubscriber {
    *   The email body.
    */
   protected function mail(EntityEvent $event, string $key, array $recipients, $subject = '', $body = '') {
-    $entity = $event->getEntity();
-    $module = $entity->getEntityType()->getProvider();
     $lang_code = $this->getLangcode($event->getEntity());
-
     foreach ($recipients as $recipient) {
-      $this->mailManager()->mail($module, $key, $recipient, $lang_code, [
+      $this->mailManager()->mail('custom_entity_mail', $key, $recipient, $lang_code, [
         'subject' => $subject,
         'body' => $body,
       ]);

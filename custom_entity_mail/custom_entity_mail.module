@@ -1,0 +1,90 @@
+<?php
+
+/**
+ * @file
+ * Contains custom_entity_mail.module.
+ */
+
+/**
+ * Implements hook_mail().
+ */
+function custom_entity_mail_mail($key, &$message, $params) {
+  $message['headers']['Return-Path'] = "unblibsystems@gmail.com";
+  _format_subject($message);
+  _format_body($message);
+}
+
+/**
+ * Format the subject.
+ *
+ * If a template path and context is given in the message "params", the
+ * subject will be rendered using those. Otherwise the subject remains
+ * unaltered.
+ *
+ * Template paths must not contain a ".twig" file extension.
+ *
+ * @param array $message
+ *   The message array.
+ */
+function _format_subject(array &$message) {
+  if (array_key_exists('subject', $message['params'])) {
+    if (array_key_exists('template', $message['params']['subject'])) {
+      $template_path = $message['params']['subject']['template'];
+      $context = array_key_exists('context', $message['params']['subject'])
+        ? $message['params']['subject']['context']
+        : [];
+      if ($subject = _tryRender($template_path, $context)) {
+        $message['subject'] = $subject;
+      }
+    }
+    unset($message['params']['subject']);
+  }
+}
+
+/**
+ * Format the message body.
+ *
+ * If a template path and context is given in the message "params", the
+ * subject will be rendered using those. Otherwise the message body remains
+ * unaltered.
+ *
+ * Template paths must not contain a ".twig" file extension.
+ *
+ * @param array $message
+ *   The message array.
+ */
+function _format_body(array &$message) {
+  if (array_key_exists('body', $message['params'])) {
+    if (array_key_exists('template', $message['params']['body'])) {
+      $template_path = $message['params']['body']['template'];
+      $context = array_key_exists('context', $message['params']['body'])
+        ? $message['params']['body']['context']
+        : [];
+      if ($body = _tryRender($template_path, $context)) {
+        $message['body'][] = $body;
+      }
+    }
+    unset($message['params']['body']);
+  }
+}
+
+/**
+ * Try render the given Twig template with the given context.
+ *
+ * @param string $template
+ *   The path to the template.
+ * @param array $context
+ *   An array of variable names and values.
+ *
+ * @return false|string
+ *   The rendered content. FALSE if an error occurs during rendering.
+ */
+function _tryRender($template, array $context) {
+  try {
+    $twig = Drupal::service('twig');
+    return $twig->render($template . '.twig', $context);
+  }
+  catch (\Exception $e) {
+    return FALSE;
+  }
+}
