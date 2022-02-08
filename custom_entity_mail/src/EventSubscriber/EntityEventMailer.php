@@ -160,7 +160,7 @@ abstract class EntityEventMailer extends EntityEventSubscriber {
       $this->mailManager()->mail('custom_entity_mail', $key, $recipient, $lang_code, [
         'subject' => $subject,
         'body' => $body,
-      ]);
+      ], $this->getReplyTo($event->getEntity()));
     }
   }
 
@@ -183,6 +183,19 @@ abstract class EntityEventMailer extends EntityEventSubscriber {
       // @todo Load the site's default langcode.
       return 'en';
     }
+  }
+
+  /**
+   * Get the email address to be used to answer.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   An entity.
+   *
+   * @return string|null
+   *   An email address. NULL if no "reply-to" address should be provided.
+   */
+  protected function getReplyTo(EntityInterface $entity) {
+    return NULL;
   }
 
 }
