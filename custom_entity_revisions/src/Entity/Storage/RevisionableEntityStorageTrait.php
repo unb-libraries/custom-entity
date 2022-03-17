@@ -62,7 +62,6 @@ trait RevisionableEntityStorageTrait {
         LIMIT 1");
 
     $revision_id = $this->database()->query($query)->fetchCol();
-    var_dump($revision_id);
     if (!empty($revision_id)) {
       return $this->loadRevision($revision_id[0]);
     }
