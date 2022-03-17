@@ -29,7 +29,7 @@ trait RevisionableEntityStorageTrait {
     $revision_id_key = $this->getEntityType()->getKey('revision');
     $revision_table = $this->getEntityType()->getRevisionTable();
 
-    $revision_ids = $this->database->query(
+    $revision_ids = $this->database()->query(
       "SELECT {$revision_id_key} FROM {$revision_table} WHERE id = :entity_id", [
         ':entity_id' => $entity->id(),
       ]
@@ -61,7 +61,7 @@ trait RevisionableEntityStorageTrait {
         ORDER BY {$entity_revision_key} DESC
         LIMIT 1");
 
-    $revision_id = $this->database->query($query)->fetchCol();
+    $revision_id = $this->database()->query($query)->fetchCol();
     var_dump($revision_id);
     if (!empty($revision_id)) {
       return $this->loadRevision($revision_id[0]);
