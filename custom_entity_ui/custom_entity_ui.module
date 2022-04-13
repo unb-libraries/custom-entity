@@ -9,11 +9,9 @@ function custom_entity_ui_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     // Main module help.
     case 'help.page.custom_entity_ui':
+      return t('<h3>About</h3><p>The Custom Entity UI module provides an admin interface for custom entity types.</p>');
     default:
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('The Custom Entity UI module provides an admin interface for custom entity types.') . '</p>';
-      return $output;
+      return '';
   }
 }
 
