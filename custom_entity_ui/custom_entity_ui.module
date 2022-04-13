@@ -1,0 +1,34 @@
+<?php
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function custom_entity_ui_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help.
+    case 'help.page.custom_entity_ui':
+    default:
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Custom Entity UI module provides an admin interface for custom entity types.') . '</p>';
+      return $output;
+  }
+}
+
+///**
+// * Implements hook_menu_local_actions_alter().
+// */
+//function custom_entity_ui_menu_local_actions_alter(&$local_actions) {
+//  $local_action_builders = Drupal::service('local_action_builder.entity.collector')->getLocalEntityActionBuilders();
+//  foreach (Drupal::entityTypeManager()->getDefinitions() as $entity_type) {
+//    /** @var \Drupal\custom_entity_ui\Menu\LocalEntityActionBuilderInterface $action_builder */
+//    foreach ($local_action_builders as $action_builder) {
+//      if ($action_builder->applies($entity_type)) {
+//        $local_action = $action_builder->buildLocalAction($entity_type);
+//        $local_actions[$local_action['id']] = $local_action;
+//      }
+//    }
+//  }
+//}

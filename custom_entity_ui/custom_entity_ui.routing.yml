@@ -1,0 +1,9 @@
+entity_type.custom.collection:
+  path: '/admin/structure/custom-types'
+  defaults:
+    _controller: 'Drupal\custom_entity_ui\Controller\EntityTypeTableController::listing'
+    _title: 'Custom types'
+  requirements:
+    _permission: 'list custom entity types'
+  options:
+    _admin_route: true

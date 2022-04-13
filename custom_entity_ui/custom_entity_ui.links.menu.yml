@@ -1,0 +1,5 @@
+entity_type.custom.collection:
+  title: 'Custom types'
+  description: 'Create and manage fields, forms, and display settings for custom entities.'
+  route_name: entity_type.custom.collection
+  parent: system.admin_structure
