@@ -4,5 +4,4 @@ description: 'Dispatch and subscribe to custom entity events.'
 core: 8.x
 core_version_requirement: ^8 || ^9
 package: 'Custom Entity'
-dependencies:
-  - custom_entity_events
+dependencies: { }
