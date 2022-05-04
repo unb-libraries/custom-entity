@@ -1,0 +1,8 @@
+name: 'Custom Entity UI'
+type: module
+description: 'The module provides an administration UI for custom entity types.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Custom Entity'
+dependencies:
+  - field_ui
