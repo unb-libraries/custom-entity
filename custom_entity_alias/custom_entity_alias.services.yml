@@ -1,0 +1,9 @@
+services:
+  views.alias_generator:
+    class: Drupal\custom_entity_alias\views\EntityViewAliasGenerator
+    arguments:
+      - '@token'
+      - '@token.entity_mapper'
+      - '@pathauto.alias_cleaner'
+      - '@pathauto.alias_uniquifier'
+      - '@pathauto.alias_storage_helper'

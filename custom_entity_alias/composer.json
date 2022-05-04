@@ -1,0 +1,17 @@
+{
+  "name": "unb-libraries/custom-entity-alias",
+  "description": "Create path aliases for Drupal views related to custom entities.",
+  "type": "drupal-module",
+  "require": {},
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Patrick Schilf",
+      "email": "pschilf@unb.ca"
+    },
+    {
+      "name": "UNB Libraries",
+      "email": "libsupport@unb.ca"
+    }
+  ]
+}
