@@ -1,0 +1,7 @@
+core.entity_form_display.*.third_party.custom_entity_ui:
+  type: mapping
+  label: 'Advanced Settings'
+  mapping:
+    redirect_destination:
+      type: string
+      label: 'Redirect destination'
