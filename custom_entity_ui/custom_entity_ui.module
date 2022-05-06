@@ -5,10 +5,11 @@
  * Contains custom_entity_ui.module.
  */
 
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_help().
@@ -32,6 +33,7 @@ function custom_entity_ui_form_alter(&$form, FormStateInterface $form_state, $fo
     $entity_form = $form_state->getFormObject();
 
     if ($entity_form->getEntity()->getEntityTypeId() === 'entity_form_display') {
+      // Add form display form element.
       /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $form_display */
       $form_display = $entity_form->getEntity();
 
@@ -47,20 +49,51 @@ function custom_entity_ui_form_alter(&$form, FormStateInterface $form_state, $fo
         ],
       ];
 
-      $form['#entity_builders'][] = 'saveAdvancedSettings';
+      $form['#entity_builders'][] = 'save_advanced_settings';
+    }
+    else {
+      // Add entity form submit handler.
+      $form['actions']['submit']['#submit'][] = 'redirect_on_success';
     }
   }
 }
 
 /**
- * Save advanced settings as received from the form.
+ * Entity builder callback saving advanced settings as received from then form.
+ *
+ * @param string $entity_type_id
+ *   The entity type ID, i.e. 'entity_form_display'.
+ * @param \Drupal\Core\Config\Entity\ConfigEntityInterface $entity
+ *   The display form entity, i.e. the display form entity.
+ * @param array $form
+ *   The renderable display form settings form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The display form settings form state.
  */
-function saveAdvancedSettings(string $entity_type_id, \Drupal\Core\Config\Entity\ConfigEntityInterface $entity, array &$form, FormStateInterface &$form_state) {
+function save_advanced_settings(string $entity_type_id, \Drupal\Core\Config\Entity\ConfigEntityInterface $entity, array &$form, FormStateInterface &$form_state) {
   if ($redirect_destination = $form_state->getValue('redirect_destination')) {
     $entity->setThirdPartySetting('custom_entity', 'redirect_destination', $redirect_destination);
   }
   else {
     $entity->unsetThirdPartySetting('custom_entity', 'redirect_destination');
+  }
+}
+
+/**
+ * Submit handler for entity forms.
+ *
+ * @param array $form
+ *   The renderable form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ */
+function redirect_on_success(array &$form, FormStateInterface $form_state) {
+  $redirect_destination = $form_state
+    ->getFormObject()
+    ->getFormDisplay($form_state)
+    ->getThirdPartySetting('custom_entity', 'redirect_destination');
+  if ($redirect_destination) {
+    $form_state->setRedirectUrl(Url::fromRoute($redirect_destination));
   }
 }
 
