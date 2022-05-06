@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Contains custom_entity_ui.module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
@@ -12,6 +20,47 @@ function custom_entity_ui_help($route_name, RouteMatchInterface $route_match) {
       return t('<h3>About</h3><p>The Custom Entity UI module provides an admin interface for custom entity types.</p>');
     default:
       return '';
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function custom_entity_ui_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (is_a($form_state->getFormObject(), EntityFormInterface::class)) {
+    /** @var \Drupal\Core\Entity\EntityFormInterface $entity_form */
+    $entity_form = $form_state->getFormObject();
+
+    if ($entity_form->getEntity()->getEntityTypeId() === 'entity_form_display') {
+      /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $form_display */
+      $form_display = $entity_form->getEntity();
+
+      $form['advanced'] = [
+        '#type' => 'details',
+        '#title' => t('Advanced settings'),
+        'redirect_destination' => [
+          '#type' => 'textfield',
+          '#title' => t('Redirect destination'),
+          '#description' => t('Route to redirect to after successful form submission.'),
+          '#default_value' => $form_display
+            ->getThirdPartySetting('custom_entity', 'redirect_destination'),
+        ],
+      ];
+
+      $form['#entity_builders'][] = 'saveAdvancedSettings';
+    }
+  }
+}
+
+/**
+ * Save advanced settings as received from the form.
+ */
+function saveAdvancedSettings(string $entity_type_id, \Drupal\Core\Config\Entity\ConfigEntityInterface $entity, array &$form, FormStateInterface &$form_state) {
+  if ($redirect_destination = $form_state->getValue('redirect_destination')) {
+    $entity->setThirdPartySetting('custom_entity', 'redirect_destination', $redirect_destination);
+  }
+  else {
+    $entity->unsetThirdPartySetting('custom_entity', 'redirect_destination');
   }
 }
 
