@@ -1,0 +1,2 @@
+permission_callbacks:
+  - Drupal\custom_entity\Entity\Access\CustomEntityPermissions::permissions
