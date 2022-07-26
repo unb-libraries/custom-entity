@@ -5,8 +5,7 @@
  * Contains custom_entity_ui.module.
  */
 
-use Drupal\Core\Config\Entity\ConfigEntityInterface;
-use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\ContentEntityFormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
@@ -28,7 +27,7 @@ function custom_entity_ui_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_form_alter().
  */
 function custom_entity_ui_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (is_a($form_state->getFormObject(), EntityFormInterface::class)) {
+  if (is_a($form_state->getFormObject(), ContentEntityFormInterface::class)) {
     /** @var \Drupal\Core\Entity\EntityFormInterface $entity_form */
     $entity_form = $form_state->getFormObject();
 
