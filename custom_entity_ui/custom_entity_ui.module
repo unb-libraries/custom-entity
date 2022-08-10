@@ -56,8 +56,12 @@ function custom_entity_ui_form_alter(&$form, FormStateInterface $form_state, $fo
         'message_success' => [
           '#type' => 'textfield',
           '#title' => t('Success message'),
-          '#description' => t('Status message to display after successful form submission.'),
+          '#description' => t('Status message to display after successful form submission. Accepts tokens.'),
           '#default_value' => $advanced_settings['message_success'],
+        ],
+        'token_help' => [
+          '#theme' => 'token_tree_link',
+          '#token_types' => [$form_display->getTargetEntityTypeId()],
         ],
       ];
 
@@ -120,8 +124,7 @@ function custom_entity_ui_content_entity_form_submit(array &$form, FormStateInte
 
   if (array_key_exists('message_success', $settings)) {
     if (empty($form_state->getErrors())) {
-      /** @var \Drupal\Core\Utility\Token $token */
-      $token = Drupal::service('token');
+      $token = Drupal::token();
       $success_message = $token->replace($settings['message_success'], [$entity->getEntityTypeId() => $entity]);
       Drupal::messenger()->addStatus($success_message);
     }
