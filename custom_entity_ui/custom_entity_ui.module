@@ -5,7 +5,8 @@
  * Contains custom_entity_ui.module.
  */
 
-use Drupal\Core\Entity\ContentEntityFormInterface;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
@@ -27,7 +28,7 @@ function custom_entity_ui_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_form_alter().
  */
 function custom_entity_ui_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (is_a($form_state->getFormObject(), ContentEntityFormInterface::class)) {
+  if (is_a($form_state->getFormObject(), EntityFormInterface::class)) {
     /** @var \Drupal\Core\Entity\EntityFormInterface $entity_form */
     $entity_form = $form_state->getFormObject();
 
@@ -50,7 +51,7 @@ function custom_entity_ui_form_alter(&$form, FormStateInterface $form_state, $fo
 
       $form['#entity_builders'][] = 'save_advanced_settings';
     }
-    else {
+    elseif (is_a($entity_type, ContentEntityTypeInterface::class)) {
       // Add entity form submit handler.
       $form['actions']['submit']['#submit'][] = 'redirect_on_success';
     }
