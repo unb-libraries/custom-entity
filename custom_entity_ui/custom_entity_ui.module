@@ -64,7 +64,7 @@ function custom_entity_ui_form_alter(&$form, FormStateInterface $form_state, $fo
       $form['#entity_builders'][] = 'custom_entity_ui_save_advanced_settings';
     }
     elseif (is_a($entity_type, ContentEntityTypeInterface::class)) {
-      // Add entity form submit handler.
+      // Add content entity form submit handler.
       $form['actions']['submit']['#submit'][] = 'custom_entity_ui_content_entity_form_submit';
     }
   }
@@ -106,13 +106,16 @@ function custom_entity_ui_save_advanced_settings(string $entity_type_id, ConfigE
  *   The current state of the form.
  */
 function custom_entity_ui_content_entity_form_submit(array &$form, FormStateInterface $form_state) {
-  $settings = $form_state
-    ->getFormObject()
+  /** @var \Drupal\Core\Entity\ContentEntityFormInterface $entity_form */
+  $entity_form = $form_state->getFormObject();
+  $entity = $entity_form->getEntity();
+  $settings = $entity_form
     ->getFormDisplay($form_state)
     ->getThirdPartySettings('custom_entity');
 
   if (array_key_exists('redirect_destination', $settings)) {
-    $form_state->setRedirectUrl(Url::fromRoute($settings['redirect_destination']));
+    $redirect_url = Url::fromRoute($settings['redirect_destination'], [$entity->getEntityTypeId() => $entity->id()]);
+    $form_state->setRedirectUrl($redirect_url);
   }
 
   if (array_key_exists('message_success', $settings)) {
