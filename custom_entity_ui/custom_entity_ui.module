@@ -120,7 +120,10 @@ function custom_entity_ui_content_entity_form_submit(array &$form, FormStateInte
 
   if (array_key_exists('message_success', $settings)) {
     if (empty($form_state->getErrors())) {
-      Drupal::messenger()->addStatus($settings['message_success']);
+      /** @var \Drupal\Core\Utility\Token $token */
+      $token = Drupal::service('token');
+      $success_message = $token->replace($settings['message_success'], [$entity->getEntityTypeId() => $entity]);
+      Drupal::messenger()->addStatus($success_message);
     }
   }
 }
