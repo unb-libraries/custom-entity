@@ -1,0 +1,6 @@
+name: 'Custom Entity Update'
+type: module
+description: 'Update custom entity field definitions.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Custom Entity'
