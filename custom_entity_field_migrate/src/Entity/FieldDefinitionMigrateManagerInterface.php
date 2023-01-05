@@ -1,0 +1,21 @@
+<?php
+
+namespace Drupal\custom_entity_field_migrate\Entity;
+
+interface FieldDefinitionMigrateManagerInterface {
+
+  /**
+   * Install an entity field.
+   *
+   * @param string $field_id
+   *   The ID of the field to install.
+   * @param string $entity_type_id
+   *   The ID of the field's entity type.
+   * @param string|null $bundle
+   *   The field's bundle.
+   *
+   * @throws \Drupal\Core\Utility\UpdateException
+   */
+  public function installBaseField(string $field_id, string $entity_type_id, string $bundle = NULL);
+
+}
