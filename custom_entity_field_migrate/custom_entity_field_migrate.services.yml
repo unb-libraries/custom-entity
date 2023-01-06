@@ -3,4 +3,5 @@ services:
     class: Drupal\custom_entity_field_migrate\Entity\FieldDefinitionMigrateManager
     arguments:
       - '@entity_type.manager'
+      - '@entity_field.manager'
       - '@entity.definition_update_manager'

@@ -3,6 +3,7 @@
 namespace Drupal\custom_entity_field_migrate\Entity;
 
 use Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Utility\UpdateException;
 
@@ -17,6 +18,13 @@ class FieldDefinitionMigrateManager implements FieldDefinitionMigrateManagerInte
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
+
+  /**
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
 
   /**
    * The entity definition update manager.
@@ -36,6 +44,16 @@ class FieldDefinitionMigrateManager implements FieldDefinitionMigrateManagerInte
   }
 
   /**
+   * Get the entity field manager.
+   *
+   * @return \Drupal\Core\Entity\EntityFieldManagerInterface
+   *   An entity field manager instance.
+   */
+  protected function entityFieldManager() {
+    return $this->entityFieldManager;
+  }
+
+  /**
    * Get the entity definition update manager.
    *
    * @return \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface
@@ -50,11 +68,14 @@ class FieldDefinitionMigrateManager implements FieldDefinitionMigrateManagerInte
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   An entity type manager.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface
+   *   An entity field manager.
    * @param \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface $definition_update_manager
    *   An entity definition update manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityDefinitionUpdateManagerInterface $definition_update_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityDefinitionUpdateManagerInterface $definition_update_manager) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->entityFieldManager = $entity_field_manager;
     $this->definitionUpdateManager = $definition_update_manager;
   }
 
@@ -79,9 +100,7 @@ class FieldDefinitionMigrateManager implements FieldDefinitionMigrateManagerInte
    * {@inheritDoc}
    */
   public function uninstallBaseField(string $field_id, string $entity_type_id) {
-    /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
-    $entity_field_manager = \Drupal::service('entity_field.manager');
-    if (!$field_definition = $entity_field_manager->getFieldStorageDefinitions($entity_type_id)[$field_id]) {
+    if (!$field_definition = $this->entityFieldManager()->getFieldStorageDefinitions($entity_type_id)[$field_id]) {
       $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
       throw new UpdateException("No field definition {$field_id} found for entity type {$entity_type->getLabel()}");
     }
