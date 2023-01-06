@@ -75,4 +75,19 @@ class FieldDefinitionMigrateManager implements FieldDefinitionMigrateManagerInte
       ->installFieldStorageDefinition($field_id, $entity_type_id, $entity_type->getProvider(), $field_definition);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public function uninstallBaseField(string $field_id, string $entity_type_id) {
+    /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    if (!$field_definition = $entity_field_manager->getFieldStorageDefinitions($entity_type_id)[$field_id]) {
+      $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+      throw new UpdateException("No field definition {$field_id} found for entity type {$entity_type->getLabel()}");
+    }
+
+    $this->definitionUpdateManager()
+      ->uninstallFieldStorageDefinition($field_definition);
+  }
+
 }
