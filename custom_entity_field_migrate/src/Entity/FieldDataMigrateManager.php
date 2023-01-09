@@ -2,18 +2,86 @@
 
 namespace Drupal\custom_entity_field_migrate\Entity;
 
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+
 /**
  * Copies, moves, or deletes field data.
  */
 class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
 
   /**
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $db;
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
+   * Get the database connection.
+   *
+   * @return \Drupal\Core\Database\Connection
+   *   A database connection instance.
+   */
+  protected function db() {
+    return $this->db;
+  }
+
+  /**
+   * Get the entity type manager.
+   *
+   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   *   An entity type manager instance.
+   */
+  protected function entityTypeManager() {
+    return $this->entityTypeManager;
+  }
+
+  /**
+   * Get the entity field manager.
+   *
+   * @return \Drupal\Core\Entity\EntityFieldManagerInterface
+   *   An entity field manager instance.
+   */
+  protected function entityFieldManager() {
+    return $this->entityFieldManager;
+  }
+
+  /**
+   * Construct a new field data migrate manager instance.
+   *
+   * @param \Drupal\Core\Database\Connection $db
+   *   A database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   An entity type manager.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   An entity field manager.
+   */
+  public function __construct(Connection $db, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager) {
+    $this->db = $db;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->entityFieldManager = $entity_field_manager;
+  }
+
+  /**
    * {@inheritDoc}
    */
   public function copy(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, array $options = []) {
-    /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
-    $entity_field_manager = \Drupal::service('entity_field.manager');
-
     /** @var \Drupal\Core\Entity\Sql\SqlEntityStorageInterface $storage */
     $storage = $this->entityTypeManager()->getStorage($entity_type_id);
     /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
@@ -21,10 +89,11 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
 
     /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $source_map */
     $source_map = $storage->getTableMapping();
-    $source_field_definition = $entity_field_manager->getFieldStorageDefinitions($entity_type_id)[$source_field_id];
+    $source_field_definition = $this->entityFieldManager()
+      ->getFieldStorageDefinitions($entity_type_id)[$source_field_id];
     $source_table = $source_map->getDedicatedDataTableName($source_field_definition);
     $source_fields = array_merge(['entity_id'], $source_map->getColumnNames($source_field_id));
-    $source_data = \Drupal::database()
+    $source_data = $this->db()
       ->select($source_table)
       ->fields($source_table, $source_fields)
       ->orderBy('entity_id')
@@ -33,7 +102,8 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
 
     /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $target_map */
     $target_map = $storage->getTableMapping();
-    $target_field_definition = $entity_field_manager->getFieldStorageDefinitions($entity_type_id)[$target_field_id];
+    $target_field_definition = $this->entityFieldManager()
+      ->getFieldStorageDefinitions($entity_type_id)[$target_field_id];
     $target_table = $target_map->getFieldTableName($target_field_id);
 
     $column_map = [];
@@ -47,7 +117,7 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
       $fields = array_map(function ($source_field) use ($values) {
         return $values->$source_field;
       }, array_flip($column_map));
-      \Drupal::database()
+      $this->db()
         ->update($target_table)
         ->condition($entity_type->getKey('id'), $id)
         ->fields($fields)
