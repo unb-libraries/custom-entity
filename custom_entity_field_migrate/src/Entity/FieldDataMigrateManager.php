@@ -129,7 +129,8 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
    * {@inheritDoc}
    */
   public function move(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, array $options = []) {
-    // TODO: Implement move() method.
+    $this->copy($source_field_id, $target_field_id, $entity_type_id);
+    $this->delete($source_field_id, $entity_type_id);
   }
 
   /**
