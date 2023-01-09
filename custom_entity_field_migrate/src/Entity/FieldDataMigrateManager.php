@@ -4,6 +4,7 @@ namespace Drupal\custom_entity_field_migrate\Entity;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
@@ -91,15 +92,8 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
     $source_map = $storage->getTableMapping();
     $source_field_definition = $this->entityFieldManager()
       ->getFieldStorageDefinitions($entity_type_id)[$source_field_id];
-    $source_table = $source_map->getDedicatedDataTableName($source_field_definition);
-    $source_fields = array_merge(['entity_id'], $source_map->getColumnNames($source_field_id));
-    $source_data = $this->db()
-      ->select($source_table)
-      ->fields($source_table, $source_fields)
-      ->orderBy('entity_id')
-      ->execute()
-      ->fetchAllAssoc('entity_id');
 
+    $source_table = $source_map->getDedicatedDataTableName($source_field_definition);
     /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $target_map */
     $target_map = $storage->getTableMapping();
     $target_field_definition = $this->entityFieldManager()
@@ -113,7 +107,18 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
       $column_map[$source_column_name] = $target_column_name;
     }
 
-    foreach ($source_data as $id => $values) {
+    $this->doCopy($entity_type, $source_table, $target_table, $column_map);
+  }
+
+  protected function doCopy(EntityTypeInterface $entity_type, $source_table, $target_table, $column_map) {
+    $data = $this->db()
+      ->select($source_table)
+      ->fields($source_table, array_merge('entity_id', array_keys($column_map)))
+      ->orderBy('entity_id')
+      ->execute()
+      ->fetchAllAssoc('entity_id');
+
+    foreach ($data as $id => $values) {
       $fields = array_map(function ($source_field) use ($values) {
         return $values->$source_field;
       }, array_flip($column_map));
