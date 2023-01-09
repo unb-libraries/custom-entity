@@ -108,15 +108,23 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
     }
 
     $this->doCopy($entity_type, $source_table, $target_table, $column_map);
+    if ($source_field_definition->isRevisionable()) {
+      $source_revision_table = $source_map->getDedicatedRevisionTableName($source_field_definition);
+      $target_revision_table = $entity_type->getRevisionTable();
+      $this->doCopy($entity_type, $source_revision_table, $target_revision_table, $column_map, TRUE);
+    }
   }
 
-  protected function doCopy(EntityTypeInterface $entity_type, $source_table, $target_table, $column_map) {
+  protected function doCopy(EntityTypeInterface $entity_type, $source_table, $target_table, $column_map, $revision = FALSE) {
+    $source_id = $revision ? 'revision_id' : 'entity_id';
+    $target_id = $entity_type->getKey($revision ? 'revision' : 'id');
+
     $data = $this->db()
       ->select($source_table)
-      ->fields($source_table, array_merge('entity_id', array_keys($column_map)))
-      ->orderBy('entity_id')
+      ->fields($source_table, array_merge([$source_id], array_keys($column_map)))
+      ->orderBy($source_id)
       ->execute()
-      ->fetchAllAssoc('entity_id');
+      ->fetchAllAssoc($source_id);
 
     foreach ($data as $id => $values) {
       $fields = array_map(function ($source_field) use ($values) {
@@ -124,7 +132,7 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
       }, array_flip($column_map));
       $this->db()
         ->update($target_table)
-        ->condition($entity_type->getKey('id'), $id)
+        ->condition($target_id, $id)
         ->fields($fields)
         ->execute();
     }
