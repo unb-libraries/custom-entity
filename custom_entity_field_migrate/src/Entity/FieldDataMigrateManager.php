@@ -136,7 +136,21 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
    * {@inheritDoc}
    */
   public function delete(string $field_id, string $entity_type_id, string $bundle = NULL, array $options = []) {
-    // TODO: Implement delete() method.
+    /** @var \Drupal\Core\Entity\Sql\SqlEntityStorageInterface $storage */
+    $storage = $this->entityTypeManager()->getStorage($entity_type_id);
+
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $field_map */
+    $field_map = $storage->getTableMapping();
+    $field_definition = $this->entityFieldManager()
+      ->getFieldStorageDefinitions($entity_type_id)[$field_id];
+    $table_name = $field_map->getFieldTableName($field_id);
+    $column_name = $field_map
+      ->getFieldColumnName($field_definition, $field_definition->getMainPropertyName());
+
+    $this->db()
+      ->update($table_name)
+      ->fields([$column_name => NULL])
+      ->execute();
   }
 
 }
