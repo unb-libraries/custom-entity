@@ -144,13 +144,20 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
     $field_definition = $this->entityFieldManager()
       ->getFieldStorageDefinitions($entity_type_id)[$field_id];
     $table_name = $field_map->getFieldTableName($field_id);
-    $column_name = $field_map
-      ->getFieldColumnName($field_definition, $field_definition->getMainPropertyName());
 
-    $this->db()
-      ->update($table_name)
-      ->fields([$column_name => NULL])
-      ->execute();
+    if ($field_definition->isBaseField()) {
+      $column_name = $field_map
+        ->getFieldColumnName($field_definition, $field_definition->getMainPropertyName());
+      $this->db()
+        ->update($table_name)
+        ->fields([$column_name => NULL])
+        ->execute();
+    }
+    else {
+      $this->db()
+        ->delete($table_name)
+        ->execute();
+    }
   }
 
 }
