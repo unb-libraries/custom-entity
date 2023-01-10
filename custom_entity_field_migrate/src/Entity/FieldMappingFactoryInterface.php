@@ -19,7 +19,7 @@ interface FieldMappingFactoryInterface {
    * @param string|null $bundle
    *   (optional) The ID of the bundle.
    *
-   * @return \Drupal\custom_entity_field_migrate\Entity\FieldMappingInterface
+   * @return \Drupal\custom_entity_field_migrate\Entity\FieldMappingInterface[]
    *   A field mapping instance.
    */
   public function create(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL);

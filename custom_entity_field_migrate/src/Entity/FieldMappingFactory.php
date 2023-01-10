@@ -65,11 +65,38 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
    * @throws \Drupal\Core\Entity\Sql\SqlContentEntityStorageException
    */
   public function create(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL) {
-    $source_table = $this->deriveTableName($source_field_id, $entity_type_id);
-    $target_table = $this->deriveTableName($target_field_id, $entity_type_id);
+    $mappings = [$this->doCreate($source_field_id, $target_field_id, $entity_type_id, $bundle)];
+    if ($this->isRevisionable($source_field_id, $entity_type_id) && $this->isRevisionable($target_field_id, $entity_type_id)) {
+      $mappings[] = $this->doCreate($source_field_id, $target_field_id, $entity_type_id, $bundle, TRUE);
+    }
+    return $mappings;
+  }
+
+  /**
+   * Creates a mapping between two tables of the source and target fields.
+   *
+   * @param string $source_field_id
+   *   The ID of the field acting as the source.
+   * @param string $target_field_id
+   *   The ID of the field acting as the target.
+   * @param string $entity_type_id
+   *   The ID of the entity type.
+   * @param string|null $bundle
+   *   (optional) The ID of the bundle.
+   *
+   * @return \Drupal\custom_entity_field_migrate\Entity\FieldMappingInterface
+   *   A field mapping instance.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\Sql\SqlContentEntityStorageException
+   */
+  protected function doCreate(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, $revision = FALSE) {
+    $source_table = $this->deriveTableName($source_field_id, $entity_type_id, $revision);
+    $target_table = $this->deriveTableName($target_field_id, $entity_type_id, $revision);
 
     $column_map = $this->buildColumnMap($source_field_id, $target_field_id, $entity_type_id);
-    $key_map = $this->buildKeyMap($source_field_id, $target_field_id, $entity_type_id);
+    $key_map = $this->buildKeyMap($source_field_id, $target_field_id, $entity_type_id, $revision);
     $method = $this->deriveUpdateMethod($target_field_id, $entity_type_id);
 
     return new FieldMapping($source_table, $target_table, $column_map, $key_map, $method);
@@ -259,6 +286,23 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
     /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $map */
     $map = $storage->getTableMapping();
     return $map;
+  }
+
+  /**
+   * Whether the given field is revisionable.
+   *
+   * @param string $field_id
+   *   An entity field ID.
+   * @param string $entity_type_id
+   *   An entity type ID.
+   *
+   * @return bool
+   *   TRUE if the given field of the given entity type is revisionable.
+   *   FALSE otherwise.
+   */
+  protected function isRevisionable(string $field_id, string $entity_type_id) {
+    return $this->getFieldStorageDefinition($field_id, $entity_type_id)
+      ->isRevisionable();
   }
 
   /**
