@@ -4,7 +4,6 @@ namespace Drupal\custom_entity_field_migrate\Entity;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
@@ -103,58 +102,35 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
    * {@inheritDoc}
    */
   public function copy(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, array $options = []) {
-    /** @var \Drupal\Core\Entity\Sql\SqlEntityStorageInterface $storage */
-    $storage = $this->entityTypeManager()->getStorage($entity_type_id);
-    /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
-    $entity_type = $storage->getEntityType();
+    $mappings = $this->fieldMappingFactory()->create($source_field_id, $target_field_id, $entity_type_id);
+    foreach ($mappings as $mapping) {
+      $data = $this->db()
+        ->select($mapping->getSourceTable())
+        ->fields($mapping->getSourceTable(), array_merge(array_keys($mapping->getKeyMap()), array_keys($mapping->getColumnMap())))
+        ->orderBy(array_keys($mapping->getKeyMap())[0])
+        ->execute()
+        ->fetchAllAssoc(array_keys($mapping->getKeyMap())[0]);
 
-    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $source_map */
-    $source_map = $storage->getTableMapping();
-    $source_field_definition = $this->entityFieldManager()
-      ->getFieldStorageDefinitions($entity_type_id)[$source_field_id];
+      foreach ($data as $values) {
+        $fields = array_map(function ($source_field) use ($values) {
+          return $values->$source_field;
+        }, array_flip($mapping->getColumnMap()));
 
-    $source_table = $source_map->getDedicatedDataTableName($source_field_definition);
-    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $target_map */
-    $target_map = $storage->getTableMapping();
-    $target_field_definition = $this->entityFieldManager()
-      ->getFieldStorageDefinitions($entity_type_id)[$target_field_id];
-    $target_table = $target_map->getFieldTableName($target_field_id);
-
-    $column_map = [];
-    foreach ($source_field_definition->getPropertyNames() as $property_name) {
-      $source_column_name = $source_map->getFieldColumnName($source_field_definition, $property_name);
-      $target_column_name = $target_map->getFieldColumnName($target_field_definition, $property_name);
-      $column_map[$source_column_name] = $target_column_name;
-    }
-
-    $this->doCopy($entity_type, $source_table, $target_table, $column_map);
-    if ($source_field_definition->isRevisionable()) {
-      $source_revision_table = $source_map->getDedicatedRevisionTableName($source_field_definition);
-      $target_revision_table = $entity_type->getRevisionTable();
-      $this->doCopy($entity_type, $source_revision_table, $target_revision_table, $column_map, TRUE);
-    }
-  }
-
-  protected function doCopy(EntityTypeInterface $entity_type, $source_table, $target_table, $column_map, $revision = FALSE) {
-    $source_id = $revision ? 'revision_id' : 'entity_id';
-    $target_id = $entity_type->getKey($revision ? 'revision' : 'id');
-
-    $data = $this->db()
-      ->select($source_table)
-      ->fields($source_table, array_merge([$source_id], array_keys($column_map)))
-      ->orderBy($source_id)
-      ->execute()
-      ->fetchAllAssoc($source_id);
-
-    foreach ($data as $id => $values) {
-      $fields = array_map(function ($source_field) use ($values) {
-        return $values->$source_field;
-      }, array_flip($column_map));
-      $this->db()
-        ->update($target_table)
-        ->condition($target_id, $id)
-        ->fields($fields)
-        ->execute();
+        if ($mapping->getMethod() === FieldMappingInterface::METHOD_UPDATE) {
+          $query = $this->db()
+            ->update($mapping->getTargetTable())
+            ->fields($fields);
+          foreach ($mapping->getKeyMap() as $source_key => $target_key) {
+            $query->condition($target_key, $values->$source_key);
+          }
+        }
+        else {
+          $query = $this->db()
+            ->insert($mapping->getTargetTable())
+            ->fields($fields);
+        }
+        $query->execute();
+      }
     }
   }
 
