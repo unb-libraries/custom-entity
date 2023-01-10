@@ -22,25 +22,18 @@ class FieldMapping implements FieldMappingInterface {
   protected $targetTable;
 
   /**
-   * The source table key.
-   *
-   * @var string|array
-   */
-  protected $sourceKey;
-
-  /**
-   * The target table key.
-   *
-   * @var string|array
-   */
-  protected $targetKey;
-
-  /**
    * The source-column-to-target-column map.
    *
-   * @var array.
+   * @var array
    */
   protected $columnMap;
+
+  /**
+   * The source-key-to-target-key map.
+   *
+   * @var array
+   */
+  protected $keyMap;
 
   /**
    * Create a new field mapping instance.
@@ -49,19 +42,16 @@ class FieldMapping implements FieldMappingInterface {
    *   A database table name.
    * @param string $target_table
    *   A database table name.
-   * @param mixed $source_key
-   *   One or multiple column name(s) of the given source table.
-   * @param mixed $target_key
-   *   One or multiple column name(s) of the given target table.
    * @param array $column_map
    *   An associate array assigning column names to other column names.
+   * @param array $key_map
+   *   An associate array assigning key column names to other key column names.
    */
-  public function __construct(string $source_table, string $target_table, mixed $source_key, mixed $target_key, array $column_map) {
+  public function __construct(string $source_table, string $target_table, array $column_map, array $key_map) {
     $this->sourceTable = $source_table;
     $this->targetTable = $target_table;
-    $this->sourceKey = $source_key;
-    $this->targetKey = $target_key;
     $this->columnMap = $column_map;
+    $this->keyMap = $key_map;
   }
 
   /**
@@ -81,22 +71,15 @@ class FieldMapping implements FieldMappingInterface {
   /**
    * {@inheritDoc}
    */
-  public function getSourceKey() {
-    return $this->sourceKey;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function getTargetKey() {
-    return $this->targetKey;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
   public function getColumnMap() {
     return $this->columnMap;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getKeyMap() {
+    return $this->keyMap;
   }
 
 
