@@ -1,4 +1,6 @@
 services:
+  field_mapping.factory:
+    class: Drupal\custom_entity_field_migrate\Entity\FieldMappingFactory
   field_definition_migrate.manager:
     class: Drupal\custom_entity_field_migrate\Entity\FieldDefinitionMigrateManager
     arguments:
