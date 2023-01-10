@@ -1,6 +1,9 @@
 services:
   field_mapping.factory:
     class: Drupal\custom_entity_field_migrate\Entity\FieldMappingFactory
+    arguments:
+      - '@entity_type.manager'
+      - '@entity_field.manager'
   field_definition_migrate.manager:
     class: Drupal\custom_entity_field_migrate\Entity\FieldDefinitionMigrateManager
     arguments:
