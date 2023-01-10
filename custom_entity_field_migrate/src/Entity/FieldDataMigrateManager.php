@@ -34,6 +34,13 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
   protected $entityFieldManager;
 
   /**
+   * The field mapping factory.
+   *
+   * @var \Drupal\custom_entity_field_migrate\Entity\FieldMappingFactoryInterface
+   */
+  protected $fieldMappingFactory;
+
+  /**
    * Get the database connection.
    *
    * @return \Drupal\Core\Database\Connection
@@ -64,6 +71,16 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
   }
 
   /**
+   * Get the field mapping factory.
+   *
+   * @return \Drupal\custom_entity_field_migrate\Entity\FieldMappingFactoryInterface
+   *   A field mapping factory.
+   */
+  protected function fieldMappingFactory() {
+    return $this->fieldMappingFactory;
+  }
+
+  /**
    * Construct a new field data migrate manager instance.
    *
    * @param \Drupal\Core\Database\Connection $db
@@ -72,11 +89,14 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
    *   An entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   An entity field manager.
+   * @param \Drupal\custom_entity_field_migrate\Entity\FieldMappingFactoryInterface $mapping_factory
+   *   A field mapping factory.
    */
-  public function __construct(Connection $db, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager) {
+  public function __construct(Connection $db, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldMappingFactoryInterface $mapping_factory) {
     $this->db = $db;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
+    $this->fieldMappingFactory = $mapping_factory;
   }
 
   /**
