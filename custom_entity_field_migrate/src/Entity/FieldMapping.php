@@ -36,6 +36,13 @@ class FieldMapping implements FieldMappingInterface {
   protected $keyMap;
 
   /**
+   * The method.
+   *
+   * @var string
+   */
+  protected $method;
+
+  /**
    * Create a new field mapping instance.
    *
    * @param string $source_table
@@ -46,12 +53,17 @@ class FieldMapping implements FieldMappingInterface {
    *   An associate array assigning column names to other column names.
    * @param array $key_map
    *   An associate array assigning key column names to other key column names.
+   * @param string $method
+   *   A string. Either 'update' or 'insert'.
    */
-  public function __construct(string $source_table, string $target_table, array $column_map, array $key_map) {
+  public function __construct(string $source_table, string $target_table, array $column_map, array $key_map, string $method) {
     $this->sourceTable = $source_table;
     $this->targetTable = $target_table;
     $this->columnMap = $column_map;
     $this->keyMap = $key_map;
+    $this->method = in_array($method, [FieldMappingInterface::METHOD_INSERT, FieldMappingInterface::METHOD_UPDATE])
+      ? $method
+      : FieldMappingInterface::METHOD_UPDATE;
   }
 
   /**
@@ -85,6 +97,13 @@ class FieldMapping implements FieldMappingInterface {
   /**
    * {@inheritDoc}
    */
+  public function getMethod() {
+    return $this->method;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public function toArray() {
     return [
       'tables' => [
@@ -92,6 +111,7 @@ class FieldMapping implements FieldMappingInterface {
       ],
       'keys' => $this->getKeyMap(),
       'columns' => $this->getColumnMap(),
+      'method' => $this->getMethod(),
     ];
   }
 

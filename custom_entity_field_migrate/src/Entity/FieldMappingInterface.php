@@ -7,6 +7,9 @@ namespace Drupal\custom_entity_field_migrate\Entity;
  */
 interface FieldMappingInterface {
 
+  const METHOD_UPDATE = 'update';
+  const METHOD_INSERT = 'insert';
+
   /**
    * The name of the table from which to import data.
    *
@@ -38,6 +41,14 @@ interface FieldMappingInterface {
    *   An array assigning each source key column a target key column.
    */
   public function getKeyMap();
+
+  /**
+   * The target table write method.
+   *
+   * @return string
+   *   Either 'update' or 'insert'.
+   */
+  public function getMethod();
 
   /**
    * Creates and returns an array representation of the field mapping.
