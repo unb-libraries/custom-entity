@@ -70,8 +70,32 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
 
     $column_map = $this->buildColumnMap($source_field_id, $target_field_id, $entity_type_id);
     $key_map = $this->buildKeyMap($source_field_id, $target_field_id, $entity_type_id);
+    $method = $this->deriveUpdateMethod($target_field_id, $entity_type_id);
 
-    return new FieldMapping($source_table, $target_table, $column_map, $key_map);
+    return new FieldMapping($source_table, $target_table, $column_map, $key_map, $method);
+  }
+
+  /**
+   * Determine the update method for writing to the given field's table.
+   *
+   * @param string $field_id
+   *   An entity field ID.
+   * @param string $entity_type_id
+   *   An entity type ID.
+   *
+   * @return string
+   *   A string. Either 'update' or 'insert'.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function deriveUpdateMethod($field_id, $entity_type_id) {
+    $map = $this->getTableMapping($entity_type_id);
+    $field_definition = $this->getFieldStorageDefinition($field_id, $entity_type_id);
+    if ($map->requiresDedicatedTableStorage($field_definition)) {
+      return FieldMappingInterface::METHOD_INSERT;
+    }
+    return FieldMappingInterface::METHOD_UPDATE;
   }
 
   /**
