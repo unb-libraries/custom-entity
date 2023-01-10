@@ -39,4 +39,12 @@ interface FieldMappingInterface {
    */
   public function getKeyMap();
 
+  /**
+   * Creates and returns an array representation of the field mapping.
+   *
+   * @return array
+   *   An array.
+   */
+  public function toArray();
+
 }

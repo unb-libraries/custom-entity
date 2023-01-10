@@ -82,5 +82,18 @@ class FieldMapping implements FieldMappingInterface {
     return $this->keyMap;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public function toArray() {
+    return [
+      'tables' => [
+        $this->getSourceTable() => $this->getTargetTable(),
+      ],
+      'keys' => $this->getKeyMap(),
+      'columns' => $this->getColumnMap(),
+    ];
+  }
+
 
 }
