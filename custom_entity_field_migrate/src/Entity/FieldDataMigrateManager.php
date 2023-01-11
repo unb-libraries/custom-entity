@@ -101,6 +101,33 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
   /**
    * {@inheritDoc}
    */
+  public function set(string $field_id, string $entity_type_id, array $values, array $only = [], string $bundle = NULL) {
+    $schema = $this->fieldMappingFactory()->createSchema($field_id, $entity_type_id, $bundle);
+
+    $rows_updated = 0;
+    foreach ($schema->getTables() as $table) {
+      $fields = array_map(function ($property) use ($values) {
+        return $values[$property];
+      }, array_flip($schema->getPropertyColumnMap()));
+
+      $query = $this->db()
+        ->update($table)
+        ->fields($fields);
+
+      if ($only) {
+        $query->condition($schema->getKey($table), $only, 'IN');
+      }
+      $rows_updated += $query
+        ->execute();
+    }
+
+    return $rows_updated;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
   public function copy(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, array $options = []) {
     $mappings = $this->fieldMappingFactory()->create($source_field_id, $target_field_id, $entity_type_id);
     foreach ($mappings as $mapping) {
