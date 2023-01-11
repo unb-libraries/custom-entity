@@ -182,7 +182,7 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
       ->getFieldStorageDefinitions($entity_type_id)[$field_id];
     $table_name = $field_map->getFieldTableName($field_id);
 
-    if ($field_definition->isBaseField()) {
+    if (!$field_map->requiresDedicatedTableStorage($field_definition)) {
       $column_name = $field_map
         ->getFieldColumnName($field_definition, $field_definition->getMainPropertyName());
       $this->db()
