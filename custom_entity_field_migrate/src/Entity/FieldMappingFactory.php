@@ -227,7 +227,10 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
     $field_definition = $this->getFieldStorageDefinition($field_id, $entity_type_id);
 
     $property_map = [];
-    foreach ($field_definition->getPropertyNames() as $property_name) {
+    $property_names = array_intersect(
+      $field_definition->getPropertyNames(),
+      array_keys($table_mapping->getColumnNames($field_id)));
+    foreach ($property_names as $property_name) {
       $property_map[$property_name] = $table_mapping
         ->getFieldColumnName($field_definition, $property_name);
     }
