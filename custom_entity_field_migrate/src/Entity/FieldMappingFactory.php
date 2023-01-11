@@ -59,6 +59,23 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
 
   /**
    * {@inheritDoc}
+   */
+  public function createSchema(string $field_id, string $entity_type_id, string $bundle = NULL) {
+    $tables = [$this->deriveTableName($field_id, $entity_type_id)];
+    $columns = $this->buildPropertyMap($field_id, $entity_type_id);
+    $keys = [$tables[0] => $this->derivePrimaryKey($field_id, $entity_type_id)];
+
+    if ($this->isRevisionable($field_id, $entity_type_id)) {
+      $tables[] = $this->deriveTableName($field_id, $entity_type_id, TRUE);
+      $keys[$tables[1]] = $this->derivePrimaryKey($field_id, $entity_type_id);
+    }
+
+    return new FieldSchema($tables, $columns, $keys);
+  }
+
+
+  /**
+   * {@inheritDoc}
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
@@ -203,6 +220,19 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
     $extra_columns = array_combine($extra_columns, $extra_columns);
 
     return array_merge($column_map, $extra_columns);
+  }
+
+  protected function buildPropertyMap($field_id, $entity_type_id) {
+    $table_mapping = $this->getTableMapping($entity_type_id);
+    $field_definition = $this->getFieldStorageDefinition($field_id, $entity_type_id);
+
+    $property_map = [];
+    foreach ($field_definition->getPropertyNames() as $property_name) {
+      $property_map[$property_name] = $table_mapping
+        ->getFieldColumnName($field_definition, $property_name);
+    }
+
+    return $property_map;
   }
 
   /**
