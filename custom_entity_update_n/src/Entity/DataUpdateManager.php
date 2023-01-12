@@ -5,11 +5,13 @@ namespace Drupal\custom_entity_update_n\Entity;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\custom_entity_update_n\Field\SchemaUpdateMappingFactoryInterface;
+use Drupal\custom_entity_update_n\Field\SchemaUpdateMappingInterface;
 
 /**
  * Copies, moves, or deletes field data.
  */
-class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
+class DataUpdateManager implements DataUpdateManagerInterface {
 
   /**
    * The database connection.
@@ -35,9 +37,9 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
   /**
    * The field mapping factory.
    *
-   * @var \Drupal\custom_entity_update_n\Entity\FieldMappingFactoryInterface
+   * @var \Drupal\custom_entity_update_n\Field\SchemaUpdateMappingFactoryInterface
    */
-  protected $fieldMappingFactory;
+  protected $schemaUpdateMappingFactory;
 
   /**
    * Get the database connection.
@@ -72,11 +74,11 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
   /**
    * Get the field mapping factory.
    *
-   * @return \Drupal\custom_entity_update_n\Entity\FieldMappingFactoryInterface
+   * @return \Drupal\custom_entity_update_n\Field\SchemaUpdateMappingFactoryInterface
    *   A field mapping factory.
    */
-  protected function fieldMappingFactory() {
-    return $this->fieldMappingFactory;
+  protected function schemaUpdateMappingFactory() {
+    return $this->schemaUpdateMappingFactory;
   }
 
   /**
@@ -88,21 +90,21 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
    *   An entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   An entity field manager.
-   * @param \Drupal\custom_entity_update_n\Entity\FieldMappingFactoryInterface $mapping_factory
+   * @param \Drupal\custom_entity_update_n\Field\SchemaUpdateMappingFactoryInterface $mapping_factory
    *   A field mapping factory.
    */
-  public function __construct(Connection $db, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldMappingFactoryInterface $mapping_factory) {
+  public function __construct(Connection $db, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaUpdateMappingFactoryInterface $mapping_factory) {
     $this->db = $db;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
-    $this->fieldMappingFactory = $mapping_factory;
+    $this->schemaUpdateMappingFactory = $mapping_factory;
   }
 
   /**
    * {@inheritDoc}
    */
   public function set(string $field_id, string $entity_type_id, array $values, array $only = [], string $bundle = NULL) {
-    $schema = $this->fieldMappingFactory()->createSchema($field_id, $entity_type_id, $bundle);
+    $schema = $this->schemaUpdateMappingFactory()->createSchema($field_id, $entity_type_id, $bundle);
 
     $rows_updated = 0;
     foreach ($schema->getTables() as $table) {
@@ -129,7 +131,7 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
    * {@inheritDoc}
    */
   public function copy(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, array $options = []) {
-    $mappings = $this->fieldMappingFactory()->create($source_field_id, $target_field_id, $entity_type_id);
+    $mappings = $this->schemaUpdateMappingFactory()->create($source_field_id, $target_field_id, $entity_type_id);
     foreach ($mappings as $mapping) {
       $data = $this->db()
         ->select($mapping->getSourceTable())
@@ -143,7 +145,7 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
           return $values->$source_field;
         }, array_flip($mapping->getColumnMap()));
 
-        if ($mapping->getMethod() === FieldMappingInterface::METHOD_UPDATE) {
+        if ($mapping->getMethod() === SchemaUpdateMappingInterface::METHOD_UPDATE) {
           $query = $this->db()
             ->update($mapping->getTargetTable())
             ->fields($fields);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_entity_update_n\Entity;
+namespace Drupal\custom_entity_update_n\Field;
 
 /**
  * Interface for field schema objects.
@@ -8,7 +8,7 @@ namespace Drupal\custom_entity_update_n\Entity;
  * A field schema provides insights into the part of the underlying database
  * layout that is relevant to a given field.
  */
-interface FieldSchemaInterface {
+interface SchemaInterface {
 
   /**
    * The database table names.

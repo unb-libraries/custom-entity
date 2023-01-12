@@ -2,7 +2,7 @@
 
 namespace Drupal\custom_entity_update_n\Entity;
 
-interface FieldDefinitionMigrateManagerInterface {
+interface SchemaUpdateManagerInterface {
 
   /**
    * Install an entity field.

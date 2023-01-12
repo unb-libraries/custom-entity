@@ -1,6 +1,6 @@
-name: 'Custom Entity Update'
+name: 'Custom Entity Update N'
 type: module
-description: 'Update custom entity field definitions.'
+description: 'Provides services to simplify custom entity update N hooks.'
 core: 8.x
 core_version_requirement: ^8 || ^9
 package: 'Custom Entity'

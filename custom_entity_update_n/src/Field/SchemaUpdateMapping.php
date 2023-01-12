@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\custom_entity_update_n\Entity;
+namespace Drupal\custom_entity_update_n\Field;
 
 /**
  * Defines a schema for migrating data between two entity fields.
  */
-class FieldMapping implements FieldMappingInterface {
+class SchemaUpdateMapping implements SchemaUpdateMappingInterface {
 
   /**
    * The source table name.
@@ -61,9 +61,9 @@ class FieldMapping implements FieldMappingInterface {
     $this->targetTable = $target_table;
     $this->columnMap = $column_map;
     $this->keyMap = $key_map;
-    $this->method = in_array($method, [FieldMappingInterface::METHOD_INSERT, FieldMappingInterface::METHOD_UPDATE])
+    $this->method = in_array($method, [SchemaUpdateMappingInterface::METHOD_INSERT, SchemaUpdateMappingInterface::METHOD_UPDATE])
       ? $method
-      : FieldMappingInterface::METHOD_UPDATE;
+      : SchemaUpdateMappingInterface::METHOD_UPDATE;
   }
 
   /**

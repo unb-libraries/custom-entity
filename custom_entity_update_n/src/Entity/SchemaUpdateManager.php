@@ -10,7 +10,7 @@ use Drupal\Core\Utility\UpdateException;
 /**
  * Migrates entity field definitions.
  */
-class FieldDefinitionMigrateManager implements FieldDefinitionMigrateManagerInterface {
+class SchemaUpdateManager implements SchemaUpdateManagerInterface {
 
   /**
    * The entity type manager.

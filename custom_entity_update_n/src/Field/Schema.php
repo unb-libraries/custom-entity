@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\custom_entity_update_n\Entity;
+namespace Drupal\custom_entity_update_n\Field;
 
 /**
  * Provides access an entity field's underlying database layout.
  */
-class FieldSchema implements FieldSchemaInterface {
+class Schema implements SchemaInterface {
 
   /**
    * The database table names.

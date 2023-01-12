@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_entity_update_n\Entity;
+namespace Drupal\custom_entity_update_n\Field;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -8,7 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 /**
  * Creates mappings between two entity fields.
  */
-class FieldMappingFactory implements FieldMappingFactoryInterface {
+class SchemaUpdateMappingFactory implements SchemaUpdateMappingFactoryInterface {
 
   /**
    * The entity type manager.
@@ -45,7 +45,7 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
   }
 
   /**
-   * Create a new FieldMappingFactory instance.
+   * Create a new SchemaUpdateMappingFactory instance.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   An entity type manager.
@@ -70,7 +70,7 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
       $keys[$tables[1]] = $this->derivePrimaryKey($field_id, $entity_type_id);
     }
 
-    return new FieldSchema($tables, $columns, $keys);
+    return new Schema($tables, $columns, $keys);
   }
 
 
@@ -101,7 +101,7 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
    * @param string|null $bundle
    *   (optional) The ID of the bundle.
    *
-   * @return \Drupal\custom_entity_update_n\Entity\FieldMappingInterface
+   * @return \Drupal\custom_entity_update_n\Field\SchemaUpdateMappingInterface
    *   A field mapping instance.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
@@ -116,7 +116,7 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
     $key_map = $this->buildKeyMap($source_field_id, $target_field_id, $entity_type_id, $revision);
     $method = $this->deriveUpdateMethod($target_field_id, $entity_type_id);
 
-    return new FieldMapping($source_table, $target_table, $column_map, $key_map, $method);
+    return new SchemaUpdateMapping($source_table, $target_table, $column_map, $key_map, $method);
   }
 
   /**
@@ -137,9 +137,9 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
     $map = $this->getTableMapping($entity_type_id);
     $field_definition = $this->getFieldStorageDefinition($field_id, $entity_type_id);
     if ($map->requiresDedicatedTableStorage($field_definition)) {
-      return FieldMappingInterface::METHOD_INSERT;
+      return SchemaUpdateMappingInterface::METHOD_INSERT;
     }
-    return FieldMappingInterface::METHOD_UPDATE;
+    return SchemaUpdateMappingInterface::METHOD_UPDATE;
   }
 
   /**

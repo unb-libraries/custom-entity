@@ -5,7 +5,7 @@ namespace Drupal\custom_entity_update_n\Entity;
 /**
  * Interface for field data migration managers.
  */
-interface FieldDataMigrateManagerInterface {
+interface DataUpdateManagerInterface {
 
   /**
    * Set a field to the given value(s).

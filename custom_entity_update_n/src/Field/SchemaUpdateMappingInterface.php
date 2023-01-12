@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\custom_entity_update_n\Entity;
+namespace Drupal\custom_entity_update_n\Field;
 
 /**
  * Interface for entity field mappings.
  */
-interface FieldMappingInterface {
+interface SchemaUpdateMappingInterface {
 
   const METHOD_UPDATE = 'update';
   const METHOD_INSERT = 'insert';
