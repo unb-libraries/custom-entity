@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_entity_field_migrate\Entity;
+namespace Drupal\custom_entity_update_n\Entity;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -101,7 +101,7 @@ class FieldMappingFactory implements FieldMappingFactoryInterface {
    * @param string|null $bundle
    *   (optional) The ID of the bundle.
    *
-   * @return \Drupal\custom_entity_field_migrate\Entity\FieldMappingInterface
+   * @return \Drupal\custom_entity_update_n\Entity\FieldMappingInterface
    *   A field mapping instance.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException

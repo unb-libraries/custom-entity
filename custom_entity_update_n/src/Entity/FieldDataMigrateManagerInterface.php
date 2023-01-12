@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_entity_field_migrate\Entity;
+namespace Drupal\custom_entity_update_n\Entity;
 
 /**
  * Interface for field data migration managers.

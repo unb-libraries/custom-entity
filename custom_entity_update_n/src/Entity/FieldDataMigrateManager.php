@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_entity_field_migrate\Entity;
+namespace Drupal\custom_entity_update_n\Entity;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -35,7 +35,7 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
   /**
    * The field mapping factory.
    *
-   * @var \Drupal\custom_entity_field_migrate\Entity\FieldMappingFactoryInterface
+   * @var \Drupal\custom_entity_update_n\Entity\FieldMappingFactoryInterface
    */
   protected $fieldMappingFactory;
 
@@ -72,7 +72,7 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
   /**
    * Get the field mapping factory.
    *
-   * @return \Drupal\custom_entity_field_migrate\Entity\FieldMappingFactoryInterface
+   * @return \Drupal\custom_entity_update_n\Entity\FieldMappingFactoryInterface
    *   A field mapping factory.
    */
   protected function fieldMappingFactory() {
@@ -88,7 +88,7 @@ class FieldDataMigrateManager implements FieldDataMigrateManagerInterface {
    *   An entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   An entity field manager.
-   * @param \Drupal\custom_entity_field_migrate\Entity\FieldMappingFactoryInterface $mapping_factory
+   * @param \Drupal\custom_entity_update_n\Entity\FieldMappingFactoryInterface $mapping_factory
    *   A field mapping factory.
    */
   public function __construct(Connection $db, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldMappingFactoryInterface $mapping_factory) {

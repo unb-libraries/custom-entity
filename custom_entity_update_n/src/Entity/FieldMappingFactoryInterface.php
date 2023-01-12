@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_entity_field_migrate\Entity;
+namespace Drupal\custom_entity_update_n\Entity;
 
 /**
  * Interface for FieldMapping creators.
@@ -17,7 +17,7 @@ interface FieldMappingFactoryInterface {
    * @param string|null $bundle
    *   (optional) An entity bundle.
    *
-   * @return \Drupal\custom_entity_field_migrate\Entity\FieldSchemaInterface
+   * @return \Drupal\custom_entity_update_n\Entity\FieldSchemaInterface
    *   A field schema object.
    */
   public function createSchema(string $field_id, string $entity_type_id, string $bundle = NULL);
@@ -34,7 +34,7 @@ interface FieldMappingFactoryInterface {
    * @param string|null $bundle
    *   (optional) The ID of the bundle.
    *
-   * @return \Drupal\custom_entity_field_migrate\Entity\FieldMappingInterface[]
+   * @return \Drupal\custom_entity_update_n\Entity\FieldMappingInterface[]
    *   A field mapping instance.
    */
   public function create(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL);

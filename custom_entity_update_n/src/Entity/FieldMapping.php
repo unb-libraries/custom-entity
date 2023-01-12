@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_entity_field_migrate\Entity;
+namespace Drupal\custom_entity_update_n\Entity;
 
 /**
  * Defines a schema for migrating data between two entity fields.

@@ -1,17 +1,17 @@
 services:
   field_mapping.factory:
-    class: Drupal\custom_entity_field_migrate\Entity\FieldMappingFactory
+    class: Drupal\custom_entity_update_n\Entity\FieldMappingFactory
     arguments:
       - '@entity_type.manager'
       - '@entity_field.manager'
   field_definition_migrate.manager:
-    class: Drupal\custom_entity_field_migrate\Entity\FieldDefinitionMigrateManager
+    class: Drupal\custom_entity_update_n\Entity\FieldDefinitionMigrateManager
     arguments:
       - '@entity_type.manager'
       - '@entity_field.manager'
       - '@entity.definition_update_manager'
   field_data_migrate.manager:
-    class: Drupal\custom_entity_field_migrate\Entity\FieldDataMigrateManager
+    class: Drupal\custom_entity_update_n\Entity\FieldDataMigrateManager
     arguments:
       - '@database'
       - '@entity_type.manager'
