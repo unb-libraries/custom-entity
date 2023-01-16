@@ -60,7 +60,7 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
    */
   public function buildHeader() {
     $header = [
-      'rid' => $this->t('Revision ID'),
+      $this->entityType->getKey('revision') => $this->t('Revision ID'),
     ];
 
     if (is_a($this->getEntity(), UserEditedInterface::class) && $this->getEntity()->hasField(UserEditedInterface::FIELD_EDITED)) {
@@ -83,7 +83,7 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
 
     // @todo Add class to highlight default revision.
     $row = [
-      'rid' => $revision->getRevisionId(),
+      $this->entityType->getKey('revision') => $revision->getRevisionId(),
     ];
 
     if (is_a($revision, UserEditedInterface::class) && $revision->hasField(UserEditedInterface::FIELD_EDITED)) {
