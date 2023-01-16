@@ -63,12 +63,12 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
       'rid' => $this->t('Revision ID'),
     ];
 
-    if (is_callable([$this->getEntity(), 'getEditedTime'])) {
-      $header['edited'] = $this->t('Edited');
+    if (is_a($this->getEntity(), UserEditedInterface::class) && $this->getEntity()->hasField(UserEditedInterface::FIELD_EDITED)) {
+      $header[UserEditedInterface::FIELD_EDITED] = $this->t('Edited');
     }
 
-    if (is_callable([$this->getEntity(), 'getEditor'])) {
-      $header['editor'] = $this->t('Editor');
+    if (is_a($this->getEntity(), UserEditedInterface::FIELD_EDITOR) && $this->getEntity()->hasField(UserEditedInterface::FIELD_EDITOR)) {
+      $header[UserEditedInterface::FIELD_EDITOR] = $this->t('Editor');
     }
 
     return $header + parent::buildHeader();
@@ -86,13 +86,13 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
       'rid' => $revision->getRevisionId(),
     ];
 
-    if (is_callable([$revision, 'getEditedTime'])) {
-      $row['edited'] = DrupalDateTime::createFromTimestamp($revision->getEditedTime())->format('Y-m-d H:i');
+    if (is_a($revision, UserEditedInterface::class) && $revision->hasField(UserEditedInterface::FIELD_EDITED)) {
+      $row[UserEditedInterface::FIELD_EDITED] = DrupalDateTime::createFromTimestamp($revision->getEditedTime())->format('Y-m-d H:i');
     }
 
-    if (is_callable([$revision, 'getEditor'])) {
+    if (is_a($revision, UserEditedInterface::class && $revision->hasField(UserEditedInterface::FIELD_EDITOR))) {
       $editor = $revision->getEditor();
-      $row['editor'] = Link::fromTextAndUrl($editor->label(), $editor->toUrl());
+      $row[UserEditedInterface::FIELD_EDITOR] = Link::fromTextAndUrl($editor->label(), $editor->toUrl());
     }
 
     return $row + parent::buildRow($entity);
