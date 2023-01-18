@@ -30,7 +30,7 @@ trait RevisionableEntityStorageTrait {
     $revision_table = $this->getEntityType()->getRevisionTable();
 
     $revision_ids = $this->database()->query(
-      "SELECT {$revision_id_key} FROM {$revision_table} WHERE id = :entity_id", [
+      "SELECT {$revision_id_key} FROM {$revision_table} WHERE id = :entity_id ORDER BY {$revision_id_key} DESC", [
         ':entity_id' => $entity->id(),
       ]
     )->fetchCol();
