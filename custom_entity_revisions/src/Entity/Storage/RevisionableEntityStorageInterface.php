@@ -19,7 +19,7 @@ interface RevisionableEntityStorageInterface extends RevisionableStorageInterfac
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity.
    *
-   * @return \Drupal\Core\Entity\RevisionableInterface
+   * @return \Drupal\Core\Entity\RevisionableInterface[]
    *   An array of entity revisions.
    */
   public function loadEntityRevisions(EntityInterface $entity);
