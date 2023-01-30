@@ -19,3 +19,25 @@ function custom_entity_entity_bundle_field_info_alter(&$fields, EntityTypeInterf
     }
   }
 }
+
+/**
+ * Implements hook_entity_bundle_info().
+ */
+function custom_entity_entity_bundle_info() {
+  $bundles = [];
+  $entity_type_manager = Drupal::entityTypeManager();
+  $bundle_types = array_filter($entity_type_manager->getDefinitions(), function (EntityTypeInterface $entity_type) {
+    return !empty($entity_type->getBundleOf());
+  });
+
+  foreach ($bundle_types as $bundle_type_id => $bundle_type) {
+    $entity_type_id = $bundle_type->getBundleOf();
+    foreach ($entity_type_manager->getStorage($bundle_type_id)->loadMultiple() as $bundle) {
+      if ($bundle_class = $bundle->get('bundle_class')) {
+        $bundles[$entity_type_id][$bundle->id()]['class'] = $bundle_class;
+      }
+    }
+  }
+
+  return $bundles;
+}
