@@ -7,13 +7,11 @@ The module is a composer package hosted on packagist and can be installed by run
 composer require unb-libraries/custom-entity
 ```
 
-or by adding it to your project's composer file:
+or by adding it to your project's ```composer.json``` file:
 
 ```json
 {
-  // ... 
   "require": {
-    // ...
     "unb-libraries/custom-entity": "dev-9.x-1.x"
   }
 }
