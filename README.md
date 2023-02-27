@@ -193,7 +193,7 @@ class MyConfigEntityForm extends ConfigEntityForm {
 ```
 
 #### ConfigEntityBundleForm
-Base form for config entities that are bundles of content entities. Built on top of ```ConfigEntityForm```, it allows for additional configuration of a bundle class.
+Base form for config entities that are bundles of content entities. Built on top of ```ConfigEntityForm```, it allows for additional configuration of a [bundle class](https://www.drupal.org/node/3191609).
 
 ### Services
 
