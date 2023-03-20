@@ -208,6 +208,6 @@ More features can be added by activating any of the following sub-modules:
 | [custom_entity_events](custom_entity_events)       | Dispatch and subscribe to custom entity events.                           |
 | [custom_entity_mail](custom_entity_mail/README.md)           | Send emails upon creating, editing, deleting custom entities.             |
 | [custom_entity_revisions](custom_entity_revisions) | A collection of components to ease working with custom entity revisions.  |
-| [custom_entity_ui](custom_entity_ui/README.md)               | Enhances FieldUI to provide an administration UI for custom entity types. |
+| [custom_entity_ui](custom_entity_ui)               | Enhances FieldUI to provide an administration UI for custom entity types. |
 | [custom_entity_update_n](custom_entity_update_n/README.md)   | Provides services to simplify custom entity update N hooks.               |
 
