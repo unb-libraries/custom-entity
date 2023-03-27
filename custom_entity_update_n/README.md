@@ -17,7 +17,7 @@ The ```entity_field.data_update.manager``` provides methods to ```set```, ```cop
 ### Example
 In order to copy field data from the ```field_title``` to the ```title``` field of the ```my_entity``` entity, run the following inside an **_update_N_** hook:
 ```php
-my_module_update_9001(array &$sandbox) {
+function my_module_update_9001(array &$sandbox) {
   // ...
   $field_data_update_manager = Drupal::service('entity_field.data_update.manager');
   $field_data_update_manager->move("field_title", "title", 'my_entity');
