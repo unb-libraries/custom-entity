@@ -15,7 +15,7 @@ The ```entity.definition_update_manager``` provided by Drupal allows installing,
 The ```entity_field.data_update.manager``` provides methods to ```set```, ```copy```, ```move```, and ```delete``` field data.
 
 ### Example
-In order to copy field data from the ```field_title``` to the ```title``` field of the ```my_entity``` entity, run the following inside an **_update_N_** hook:
+In order to move (i.e. copy, then delete) field data from the ```field_title``` to the ```title``` field of the ```my_entity``` entity, run the following inside an **_update_N_** hook:
 ```php
 function my_module_update_9001(array &$sandbox) {
   // ...
