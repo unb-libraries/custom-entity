@@ -62,3 +62,13 @@ Thank you!
 ```
 
 To customize the template context and/or filename, override the ```get<Subject|Body>Context()``` and/or ```get<Subject|Body>Template()``` methods. Refer to [```Drupal\custom_entity_mail\EventSubscriber\EntityEventTemplateMailer```](src/EventSubscriber/EntityEventTemplateMailer.php) for more details.
+
+## Contributing
+
+### Testing
+This module does not provide automated tests. To verify its correctness, follow these steps:
+1. Create a ```my_module``` module with a ```my_entity``` entity type.
+2. Create a ```field_email``` field on the ```my_entity``` entity type.
+3. Provide ```event_subcriber``` service, implementation, and templates as described above.
+4. Navigate to the ```my_entity``` form and create a new entity.
+5. Verify in your email client that you received an email with the correct subject and body.
