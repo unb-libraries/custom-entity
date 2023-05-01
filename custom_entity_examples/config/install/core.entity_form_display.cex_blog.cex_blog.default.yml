@@ -1,0 +1,22 @@
+uuid: 24f765b1-716c-4f0b-97f5-e2b515312bc8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.cex_blog.cex_blog.field_title
+  module:
+    - custom_entity_examples
+id: cex_blog.cex_blog.default
+targetEntityType: cex_blog
+bundle: cex_blog
+mode: default
+content:
+  field_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

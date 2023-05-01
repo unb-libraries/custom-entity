@@ -1,0 +1,23 @@
+uuid: 96a92b2c-275c-46f3-a67b-4bd8fcc8b8fd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.cex_blog.cex_blog.field_title
+  module:
+    - custom_entity_examples
+id: cex_blog.cex_blog.default
+targetEntityType: cex_blog
+bundle: cex_blog
+mode: default
+content:
+  field_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

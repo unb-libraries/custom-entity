@@ -1,0 +1,20 @@
+uuid: dad98c2e-0adf-4ca1-b343-da50fcfc97fc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.cex_blog.field_title
+  module:
+    - custom_entity_examples
+id: cex_blog.cex_blog.field_title
+field_name: field_title
+entity_type: cex_blog
+bundle: cex_blog
+label: Title
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

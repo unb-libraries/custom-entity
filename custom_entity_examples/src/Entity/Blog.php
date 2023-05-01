@@ -31,7 +31,7 @@ use Drupal\Core\Entity\ContentEntityBase;
  *   },
  *   links = {
  *     "canonical" = "/cex/{cex_blog}",
- *     "add-form" = "/cex/{cex_blog}/add",
+ *     "add-form" = "/cex/add",
  *     "edit-form" = "/cex/{cex_blog}/edit",
  *     "delete-form" = "/cex/{cex_blog}/delete",
  *   },
@@ -39,5 +39,12 @@ use Drupal\Core\Entity\ContentEntityBase;
  * )
  */
 class Blog extends ContentEntityBase {
+
+  /**
+   * {@inheritDoc}
+   */
+  public function label() {
+    return $this->get('field_title')->value;
+  }
 
 }
