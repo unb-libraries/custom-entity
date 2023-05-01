@@ -50,6 +50,13 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 class Post extends ContentEntityBase {
 
   /**
+   * {@inheritDoc}
+   */
+  public function label() {
+    return $this->get('field_title')->value;
+  }
+
+  /**
    * Gets the blog this post belongs to.
    *
    * @return \Drupal\custom_entity_examples\Entity\Blog

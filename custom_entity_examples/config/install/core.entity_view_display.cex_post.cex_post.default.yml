@@ -1,0 +1,25 @@
+uuid: 8fe6cad9-f32e-40a7-b387-883efaf699cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.cex_post.cex_post.field_body
+    - field.field.cex_post.cex_post.field_title
+  module:
+    - custom_entity_examples
+    - text
+id: cex_post.cex_post.default
+targetEntityType: cex_post
+bundle: cex_post
+mode: default
+content:
+  field_body:
+    type: text_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_title: true
+  search_api_excerpt: true

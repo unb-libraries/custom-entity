@@ -1,0 +1,20 @@
+uuid: 7b2e98ac-2367-4971-8e44-2a546b5095ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.cex_post.field_title
+  module:
+    - custom_entity_examples
+id: cex_post.cex_post.field_title
+field_name: field_title
+entity_type: cex_post
+bundle: cex_post
+label: Title
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

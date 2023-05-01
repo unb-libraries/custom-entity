@@ -1,0 +1,28 @@
+uuid: 74e90735-44e8-47ab-843c-65f3aa99da34
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.cex_post.field_body
+  module:
+    - allowed_formats
+    - custom_entity_examples
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - full_html
+id: cex_post.cex_post.field_body
+field_name: field_body
+entity_type: cex_post
+bundle: cex_post
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary

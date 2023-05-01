@@ -1,0 +1,25 @@
+uuid: 860bb1a6-3bb5-4510-931e-3ab039c33ba9
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_entity_examples
+    - field_permissions
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: cex_post.field_title
+field_name: field_title
+entity_type: cex_post
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
