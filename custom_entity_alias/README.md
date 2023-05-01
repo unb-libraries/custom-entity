@@ -36,4 +36,19 @@ function my_module_my_category_insert(\Drupal\Core\Entity\EntityInterface $entit
 ## Configuration
 The ```generateViewAlias``` method accepts an ```options``` array that allows customizing the exact alias being generated. Refer to the [EntityViewAliasGenerator](./src/views/EntityViewAliasGenerator.php) implementation for details.
 
+## Testing
+The module does not provide automated testing. In order to verify its features are working as expected, follow the following steps: 
+
+1. Enable the ```custom_entity_examples``` module:
+
+    ```sh
+    drush en custom_entity_examples
+    ```
+    or via the Drupal UI under ```/admin/modules```.
+
+2. Navigate to ```/cex/add``` and add a new blog _"My Blog"_.
+3. Navigate to ```/cex/my-blog/posts```. You should be seeing an empty posts page.
+
+
+
 
