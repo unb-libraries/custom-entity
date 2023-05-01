@@ -36,18 +36,18 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
  *     "uuid" = "uuid",
  *   },
  *   links = {
- *     "canonical" = "/cex/{cex_blog}/{cex_post}",
- *     "add-form" = "/cex/{cex_blog}/add",
- *     "edit-form" = "/cex/{cex_blog}/{cex_post}/edit",
- *     "delete-form" = "/cex/{cex_blog}/{cex_post}/delete",
- *     "revisions" = "/cex/{cex_blog}/{cex_post}/revisions",
- *     "revision" = "/cex/{cex_blog}/{cex_post}/revisions/{cex_post_revision}",
- *     "revision-restore-form" = "/cex/{cex_blog}/posts/{cex_post}/revisions/{cex_post_revision}/restore",
+ *     "canonical" = "/cex/{cex_blog}/posts/{cex_post}",
+ *     "add-form" = "/cex/{cex_blog}/posts/add",
+ *     "edit-form" = "/cex/{cex_blog}/posts/{cex_post}/edit",
+ *     "delete-form" = "/cex/{cex_blog}/posts/{cex_post}/delete",
+ *     "revisions" = "/cex/{cex_blog}/posts/{cex_post}/revisions",
+ *     "revision" = "/cex/{cex_blog}/posts/{cex_post}/revisions/{cex_post_revision}",
+ *     "revision-restore-form" = "/cex/posts/{cex_blog}/posts/{cex_post}/revisions/{cex_post_revision}/restore",
  *   },
  *   field_ui_base_route = "entity.cex_post.settings",
  * )
  */
-class Post extends ContentEntityBase {
+class Post extends ContentEntityBase implements PostInterface {
 
   /**
    * {@inheritDoc}
@@ -57,22 +57,14 @@ class Post extends ContentEntityBase {
   }
 
   /**
-   * Gets the blog this post belongs to.
-   *
-   * @return \Drupal\custom_entity_examples\Entity\Blog
-   *   The blog this post belongs to.
+   * {@inheritDoc}
    */
   public function getBlog() {
     return $this->get('blog')->entity;
   }
 
   /**
-   * Sets the blog this post belongs to.
-   *
-   * @param \Drupal\custom_entity_examples\Entity\Blog $blog
-   *   The blog this post belongs to.
-   *
-   * @return $this
+   * {@inheritDoc}
    */
   public function setBlog(Blog $blog) {
     $this->set('blog', $blog);

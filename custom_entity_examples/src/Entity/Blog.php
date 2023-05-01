@@ -38,7 +38,7 @@ use Drupal\Core\Entity\ContentEntityBase;
  *   field_ui_base_route = "entity.cex_blog.settings",
  * )
  */
-class Blog extends ContentEntityBase {
+class Blog extends ContentEntityBase implements BlogInterface {
 
   /**
    * {@inheritDoc}

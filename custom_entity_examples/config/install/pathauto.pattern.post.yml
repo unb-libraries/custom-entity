@@ -1,0 +1,14 @@
+uuid: f646d14d-a410-409a-9ad8-c68d346d489a
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_entity_examples
+id: post
+label: Post
+type: 'canonical_entities:cex_post'
+pattern: '/cex/[cex_post:blog:entity:field_title]/[cex_post:field_title]'
+selection_criteria: {  }
+selection_logic: and
+weight: 0
+relationships: {  }
