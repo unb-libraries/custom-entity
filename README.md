@@ -58,6 +58,33 @@ use Drupal\Core\Entity\ContentEntityBase;
 
 Currently bundle-level permission checking is not supported by the handler.
 
+### Permission handlers
+Permissions handlers create entity permissions of the form ```<OPERATION> (<BUNDLE>) <ENTITY_TYPE> entities```. Add permissions handler for an entity type as follows:
+
+```php
+<?php
+
+use Drupal\Core\Entity\ContentEntityBase;
+
+/**
+ * Defines the "my_entity" entity type.
+ *
+ * @ContentEntityType(
+ *   ...
+ *   handlers = {
+ *     ...
+ *     "permissions" = "Drupal\custom_entity\Entity\Access\EntityPermissionsHandler"
+ *   },
+ *   ...
+ * ) 
+ */
+ class MyEntity extends ContentEntityBase {
+   // ...
+ }
+```
+
+Extend the ```Drupal\custom_entity\Entity\Access\EntityPermissionsHandler``` class to create more customized permissions.
+
 ### Route handlers
 The ```Drupal\custom_entity\Entity\Routing\HtmlRouteProvider``` enhances Drupal default HtmlRouteProvider by providing the following additional routes for any entity type that activates it:
 - ```entity.my_entity.delete-all```: creates a form route to delete ALL instances of an ```my_entity```, if according ```delete-all``` link and form handler are defined.
