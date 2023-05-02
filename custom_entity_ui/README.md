@@ -26,9 +26,9 @@ class MyEntity extends ContentEntityBase {
 }
 ```
 
-If your entity type has bundles, set ```field_ui_base_route``` to the entity bundle type's edit form, e.g. ```entity.my_entity_type.edit_form```.
+The ```entity.<ENTITY_TYPE_ID>.settings``` route is provided by the module. If your entity type has bundles, set ```field_ui_base_route``` to the entity bundle type's edit form, e.g. ```entity.my_entity_type.edit_form```.
 
-Once set, your entity type will be listed ```/admin/structure/custom-types``` providing quick access to Managing fields, forms, and displays.
+Once set, your entity type will be listed under ```/admin/structure/custom-types```, enabling quick access to Managing fields, forms, and displays.
 
 ### Advanced form settings
 The module allows for additional form display configuration:
