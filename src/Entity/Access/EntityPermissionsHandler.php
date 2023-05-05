@@ -144,25 +144,34 @@ class EntityPermissionsHandler extends EntityHandlerBase implements EntityPermis
    *   entity type.
    */
   protected function buildPermission(string $operation, ConfigEntityInterface $bundle = NULL) {
-    return [
-      'title' => $bundle
-        ? $this->t('@operation @bundle_label @entity_type_plural_label', [
-          '@operation' => ucfirst($operation),
-          '@bundle_label' => strtolower($bundle->label()),
-          '@entity_type_plural_label' => strtolower($this
-            ->getEntityType()
-            ->getPluralLabel())
-        ])
-        : $this->t('@operation @entity_type_plural_label', [
-          '@operation' => ucfirst($operation),
-          '@entity_type_plural_label' => strtolower($this
-            ->getEntityType()
-            ->getPluralLabel()),
-      ]),
-      'provider' => $this
-        ->getEntityType()
-        ->getProvider(),
-    ];
+    $provider = $this
+      ->getEntityType()
+      ->getProvider();
+
+    $permission = ['provider' => $provider];
+
+    if (!$bundle) {
+      $permission['title'] = $this->t('@operation @entity_type_plural_label', [
+        '@operation' => ucfirst($operation),
+        '@entity_type_plural_label' => strtolower($this
+          ->getEntityType()
+          ->getPluralLabel()),
+      ]);
+    }
+    else {
+      $permission['title'] = $this->t('@operation @bundle_label @entity_type_plural_label', [
+        '@operation' => ucfirst($operation),
+        '@bundle_label' => strtolower($bundle->label()),
+        '@entity_type_plural_label' => strtolower($this
+          ->getEntityType()
+          ->getPluralLabel())
+      ]);
+      $permission['dependencies']['config'] = [
+        "$provider.{$bundle->getEntityType()->id()}.{$bundle->id()}",
+      ];
+    }
+
+    return $permission;
   }
 
 }
