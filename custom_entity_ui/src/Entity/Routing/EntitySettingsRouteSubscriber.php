@@ -2,6 +2,7 @@
 
 namespace Drupal\custom_entity_ui\Entity\Routing;
 
+use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteSubscriberBase;
@@ -48,8 +49,12 @@ class EntitySettingsRouteSubscriber extends RouteSubscriberBase {
    * {@inheritDoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    foreach ($this->entityTypeManager()->getDefinitions() as $entity_type_id => $entity_type) {
-      if (!$entity_type->getBundleEntityType() && $settings_route = $this->getSettingsRoute($entity_type)) {
+    $entity_types = array_filter($this->entityTypeManager()->getDefinitions(), function (EntityTypeInterface $entity_type) {
+      return $entity_type instanceof ContentEntityTypeInterface && !$entity_type->getBundleEntityType();
+    });
+
+    foreach ($entity_types as $entity_type_id => $entity_type) {
+      if ($settings_route = $this->getSettingsRoute($entity_type)) {
         $collection->add("entity.{$entity_type_id}.settings", $settings_route);
       }
     }
@@ -65,20 +70,18 @@ class EntitySettingsRouteSubscriber extends RouteSubscriberBase {
    *   A route object.
    */
   protected function getSettingsRoute(EntityTypeInterface $entity_type) {
-    if (!$entity_type->getBundleEntityType()) {
-      $form_class = $this->getFormClass($entity_type);
-      $defaults = [
-        'entity_type_id' => $entity_type->id(),
-        '_form' => $form_class,
-        '_title_callback' => $form_class . '::getTitle',
-      ];
+    $form_class = $this->getFormClass($entity_type);
+    $defaults = [
+      'entity_type_id' => $entity_type->id(),
+      '_form' => $form_class,
+      '_title_callback' => $form_class . '::getTitle',
+    ];
 
-      $requirements = [
-        '_permission' => $this->getPermission($entity_type),
-      ];
+    $requirements = [
+      '_permission' => $this->getPermission($entity_type),
+    ];
 
-      return new Route($this->getPath($entity_type), $defaults, $requirements);
-    }
+    return new Route($this->getPath($entity_type), $defaults, $requirements);
   }
 
   /**
