@@ -30,6 +30,22 @@ The ```entity.<ENTITY_TYPE_ID>.settings``` route is provided by the module. If y
 
 Once set, your entity type will be listed under ```/admin/structure/custom-types```, enabling quick access to Managing fields, forms, and displays.
 
+### Managing permissions
+If your entity type includes bundle, you may enable a _Manage permissions_ tab by including a permissions form entry in your link templates:
+
+```php
+/**
+ * @ContententityType(
+ *   id = "my_entity",
+ *   ...
+ *   links = (
+ *     ...
+ *     "entity-permissions-form" = "/admin/structure/my-module/manage/{my_entity_type}/permissions",
+ *   ),
+ * )
+ */
+```
+
 ### Advanced form settings
 The module allows for additional form display configuration:
 
