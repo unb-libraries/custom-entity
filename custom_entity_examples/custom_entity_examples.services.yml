@@ -1,0 +1,6 @@
+services:
+  my_custom.entity_event_subscriber:
+    class: Drupal\custom_entity_examples\EventSubscriber\BlogEventSubscriber
+    arguments: [ 'cex_blog' ]
+    tags:
+      - { name: 'event_subscriber' }
