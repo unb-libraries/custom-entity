@@ -44,3 +44,16 @@ my_custom.entity_event_subscriber:
 ```
 
 The service argument is optional. When omitted, the subscriber listens to events triggered by entities of **_any_** type.
+
+## Testing
+The module does not provide automated testing. In order to verify its features are working as expected, follow the following steps:
+
+1. Enable the ```custom_entity_examples``` module:
+
+    ```sh
+    drush en custom_entity_examples
+    ```
+   or via the Drupal UI under ```/admin/modules```.
+
+2. Navigate to ```/cex/add``` and add a new blog _"My Blog"_.
+3. You should be seeing the message __*An event was fired upon the creation of "My Blog"*__.
