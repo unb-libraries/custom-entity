@@ -1,0 +1,38 @@
+# Blog
+entity.cex_blog.canonical:
+  route_name: entity.cex_blog.canonical
+  base_route: entity.cex_blog.canonical
+  title: 'View'
+
+entity.cex_blog.posts:
+  route_name: view.cex_posts.page_1
+  base_route: entity.cex_blog.canonical
+  title: 'Posts'
+
+entity.cex_blog.edit_form:
+  route_name: entity.cex_blog.edit_form
+  base_route: entity.cex_blog.canonical
+  title: 'Edit'
+
+entity.cex_blog.delete_form:
+  route_name: entity.cex_blog.delete_form
+  base_route: entity.cex_blog.canonical
+  title: 'Delete'
+
+
+# Post
+entity.cex_post.canonical:
+  route_name: entity.cex_post.canonical
+  base_route: entity.cex_post.canonical
+  title: 'View'
+
+entity.cex_post.edit_form:
+  route_name: entity.cex_post.edit_form
+  base_route: entity.cex_post.canonical
+  title: 'Edit'
+
+entity.cex_post.delete_form:
+  route_name: entity.cex_post.delete_form
+  base_route: entity.cex_post.canonical
+  title: 'Delete'
+
