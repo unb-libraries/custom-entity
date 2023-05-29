@@ -1,0 +1,11 @@
+entity.cex_blog.add_form:
+  route_name: entity.cex_blog.add_form
+  title: "New blog"
+  appears_on:
+    - view.blogs.page_1
+
+entity.cex_post.add_form:
+  route_name: entity.cex_post.add_form
+  title: 'New post'
+  appears_on:
+    - view.cex_posts.page_1
