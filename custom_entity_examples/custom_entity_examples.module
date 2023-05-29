@@ -14,7 +14,7 @@ function custom_entity_examples_cex_blog_insert(BlogInterface $blog) {
   if (!is_null(Drupal::config('core.extension')->get('module')['custom_entity_alias'])) {
     $view = \Drupal::entityTypeManager()
       ->getStorage('view')
-      ->load('posts');
+      ->load('cex_posts');
     Drupal::service('views.alias_generator')
       ->generateViewAlias($view, $blog, [
         'alias' => 'field_title',
