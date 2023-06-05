@@ -81,7 +81,7 @@ class EntityRevisionsListController extends ControllerBase {
       return substr($param, 0, 1) !== '_';
     });
 
-    $entity_type_id = $params[array_keys($params)[0]];
+    $entity_type_id = $params[array_keys($params)[count($params) - 1]];
     $entity = $request->get($entity_type_id);
 
     return $this
