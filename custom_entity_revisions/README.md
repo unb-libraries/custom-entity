@@ -102,6 +102,20 @@ $previous = $my_entity->getPreviousRevision();
 $all = $my_entity->getRevisions();
 ```
 
+## Testing
+The module does not provide automated testing. In order to verify its features are working as expected, follow the following steps:
+
+1. Enable the ```custom_entity_examples``` module:
+
+    ```sh
+    drush en custom_entity_examples
+    ```
+   or via the Drupal UI under ```/admin/modules```.
+
+2. Navigate to ```/cex/add``` and add a new blog _"My Blog"_.
+3. Navigate to ```/cex/1/posts/add``` and a new post.
+4. Navigate to ```/cex/1/posts/1``` and click the _"Revisions"_ tab. You should be seeing a list of revisions.
+
 
 
 

@@ -6,6 +6,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\custom_entity_revisions\Entity\EntityRevisionsTrait;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 /**
@@ -25,6 +26,7 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
  *     "route_provider" = {
  *       "html" = "Drupal\custom_entity_examples\Entity\Routing\PostHtmlRouteProvider"
  *     },
+ *     "storage" = "Drupal\custom_entity_examples\Entity\Storage\PostStorage",
  *     "access" = "Drupal\custom_entity\Entity\Access\EntityAccessControlHandler"
  *   },
  *   base_table = "cex_post",
@@ -48,6 +50,8 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
  * )
  */
 class Post extends ContentEntityBase implements PostInterface {
+
+  use EntityRevisionsTrait;
 
   /**
    * {@inheritDoc}

@@ -36,3 +36,7 @@ entity.cex_post.delete_form:
   base_route: entity.cex_post.canonical
   title: 'Delete'
 
+entity.cex_post.revisions:
+  route_name: entity.cex_post.revisions
+  base_route: entity.cex_post.canonical
+  title: 'Revisions'
