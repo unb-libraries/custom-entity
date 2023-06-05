@@ -144,7 +144,7 @@ class EntityRevisionsListController extends ControllerBase {
     }
     else {
       // Let's look up in the route object for the name of upcasted values.
-      foreach ($route_match->getParameters() as $parameter) {
+      foreach (array_reverse($route_match->getParameters()->all()) as $parameter) {
         if ($parameter instanceof EntityInterface) {
           $entity = $parameter;
           break;
