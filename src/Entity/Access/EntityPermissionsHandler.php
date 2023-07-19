@@ -123,7 +123,7 @@ class EntityPermissionsHandler extends EntityHandlerBase implements EntityPermis
    */
   protected function buildPermissionKey(string $operation, ConfigEntityInterface $bundle = NULL) {
     return $bundle
-      ? "$operation {$bundle->label()} {$this->getEntityType()->id()} entities"
+      ? "$operation {$this->getEntityType()->id()}:{$bundle->id()} entities"
       : "$operation {$this->getEntityType()->id()} entities";
   }
 
