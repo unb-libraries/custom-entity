@@ -59,16 +59,29 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
    * {@inheritDoc}
    */
   public function buildHeader() {
+    /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
+    $entity_type = $this->getEntity()->getEntityType();
+
     $header = [
       $this->entityType->getKey('revision') => $this->t('Revision ID'),
     ];
 
-    if (is_a($this->getEntity(), UserEditedInterface::class) && $this->getEntity()->hasField(UserEditedInterface::FIELD_EDITED)) {
+    if ($entity_type->hasRevisionMetadataKey('revision_created')) {
+      $header[$entity_type->getRevisionMetadataKey('revision_created')] = $this->t('Edited');
+    }
+    else if (is_a($this->getEntity(), UserEditedInterface::class) && $this->getEntity()->hasField(UserEditedInterface::FIELD_EDITED)) {
       $header[UserEditedInterface::FIELD_EDITED] = $this->t('Edited');
     }
 
-    if (is_a($this->getEntity(), UserEditedInterface::FIELD_EDITOR) && $this->getEntity()->hasField(UserEditedInterface::FIELD_EDITOR)) {
+    if ($entity_type->hasRevisionMetadataKey('revision_user')) {
+      $header[$entity_type->getRevisionMetadataKey('revision_user')] = $this->t('Editor');
+    }
+    else if (is_a($this->getEntity(), UserEditedInterface::FIELD_EDITOR) && $this->getEntity()->hasField(UserEditedInterface::FIELD_EDITOR)) {
       $header[UserEditedInterface::FIELD_EDITOR] = $this->t('Editor');
+    }
+
+    if ($entity_type->hasRevisionMetadataKey('revision_log_message')) {
+      $header[$entity_type->getRevisionMetadataKey('revision_log_message')] = $this->t('Message');
     }
 
     return $header + parent::buildHeader();
@@ -81,18 +94,42 @@ class EntityRevisionsListBuilder extends EntityListBuilder {
     /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
     $revision = $entity;
 
+    /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
+    $entity_type = $revision->getEntityType();
+
     // @todo Add class to highlight default revision.
     $row = [
-      $this->entityType->getKey('revision') => $revision->getRevisionId(),
+      $entity_type->getKey('revision') => $revision->getRevisionId(),
     ];
 
-    if (is_a($revision, UserEditedInterface::class) && $revision->hasField(UserEditedInterface::FIELD_EDITED)) {
+    if ($entity_type->hasRevisionMetadataKey('revision_created')) {
+      $revision_created_key = $entity_type->getRevisionMetadataKey(('revision_created'));
+      if ($revision_created = $revision->get($revision_created_key)->value) {
+        $row[$revision_created_key] = DrupalDateTime::createFromTimestamp($revision_created)
+          ->format('F j, Y g:ia');
+      }
+    }
+    elseif (is_a($revision, UserEditedInterface::class) && $revision->hasField(UserEditedInterface::FIELD_EDITED)) {
       $row[UserEditedInterface::FIELD_EDITED] = DrupalDateTime::createFromTimestamp($revision->getEditedTime())->format('Y-m-d H:i');
     }
 
-    if (is_a($revision, UserEditedInterface::class && $revision->hasField(UserEditedInterface::FIELD_EDITOR))) {
+    if ($entity_type->hasRevisionMetadataKey('revision_user')) {
+      $editor_key = $entity_type->getRevisionMetadataKey(('revision_user'));
+      /** @var \Drupal\user\UserInterface $editor */
+      if ($editor = $revision->get($editor_key)->entity) {
+        $row[$editor_key] = $editor->getDisplayName();
+      }
+    }
+    else if (is_a($revision, UserEditedInterface::class && $revision->hasField(UserEditedInterface::FIELD_EDITOR))) {
       $editor = $revision->getEditor();
       $row[UserEditedInterface::FIELD_EDITOR] = Link::fromTextAndUrl($editor->label(), $editor->toUrl());
+    }
+
+    if ($entity_type->hasRevisionMetadataKey('revision_log_message')) {
+      $revision_log_key = $entity_type->getRevisionMetadataKey(('revision_log_message'));
+      if ($revision_log = $revision->get($revision_log_key)->value) {
+        $row[$revision_log_key] = $revision_log;
+      }
     }
 
     return $row + parent::buildRow($entity);
