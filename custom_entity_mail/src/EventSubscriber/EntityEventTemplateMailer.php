@@ -72,7 +72,7 @@ abstract class EntityEventTemplateMailer extends EntityEventMailer {
    */
   protected function getSubjectTemplate(EntityInterface $entity, string $key) {
     $provider = $entity->getEntityType()->getProvider();
-    $path = drupal_get_path('module', $provider) . "/templates/{$key}.subject";
+    $path = \Drupal::service('extension.list.module')->getPath($provider) . "/templates/{$key}.subject";
     if (!empty(glob("$path*"))) {
       return $path;
     }
@@ -123,7 +123,7 @@ abstract class EntityEventTemplateMailer extends EntityEventMailer {
    */
   protected function getBodyTemplate(EntityInterface $entity, string $key) {
     $provider = $entity->getEntityType()->getProvider();
-    $path = drupal_get_path('module', $provider) . "/templates/{$key}.body";
+    $path = \Drupal::service('extension.list.module')->getPath($provider) . "/templates/{$key}.body";
     if (!empty(glob("$path*"))) {
       return $path;
     }

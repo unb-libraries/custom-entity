@@ -74,7 +74,7 @@ class ConfigEntityForm extends EntityForm {
   public function doesExist(string $id) {
     return $this
         ->storage()
-        ->getQuery()
+        ->getQuery()->accessCheck(TRUE)
         ->condition('id', $id)
         ->count()
         ->execute() > 0;

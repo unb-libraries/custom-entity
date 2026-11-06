@@ -1,8 +1,7 @@
 name: 'Custom Entity Alias'
 type: module
 description: 'Create path aliases for views related to custom entities.'
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
 package: 'Custom Entity'
 dependencies:
   - pathauto
