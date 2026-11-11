@@ -1,7 +1,7 @@
 name: 'Custom Entity Examples'
 type: module
 description: 'Demonstrate the features provided by the custom-entity suite of modules.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Custom Entity'
 dependencies:
   - pathauto

@@ -62,7 +62,7 @@ class EntityRevisionsListController extends ControllerBase {
    * @return string|null
    *   The title for the entity view page, if an entity was found.
    */
-  public function listTitle(RouteMatchInterface $route_match, EntityInterface $_entity = NULL) {
+  public function listTitle(RouteMatchInterface $route_match, ?EntityInterface $_entity = NULL) {
     if ($entity = $this->doGetEntity($route_match, $_entity)) {
       return $this->t('@entity revisions', [
         '@entity' => $entity->label(),
@@ -82,7 +82,7 @@ class EntityRevisionsListController extends ControllerBase {
     });
 
     $entity_type_id = $params[array_keys($params)[count($params) - 1]];
-    $entity = $request->get($entity_type_id);
+    $entity = $request->attributes->get($entity_type_id);
 
     return $this
       ->listBuilderFactory()
@@ -101,7 +101,7 @@ class EntityRevisionsListController extends ControllerBase {
    * @return string|null
    *   The title for the entity view page, if an entity was found.
    */
-  public function title(RouteMatchInterface $route_match, EntityInterface $_entity = NULL) {
+  public function title(RouteMatchInterface $route_match, ?EntityInterface $_entity = NULL) {
     if ($entity = $this->doGetEntity($route_match, $_entity)) {
       return $this->t('@entity (revision)', [
         '@entity' => $entity->label(),
@@ -138,7 +138,7 @@ class EntityRevisionsListController extends ControllerBase {
    *   The entity, if it is passed in directly or if the first parameter of the
    *   active route is an entity; otherwise, NULL.
    */
-  protected function doGetEntity(RouteMatchInterface $route_match, EntityInterface $_entity = NULL) {
+  protected function doGetEntity(RouteMatchInterface $route_match, ?EntityInterface $_entity = NULL) {
     if ($_entity) {
       $entity = $_entity;
     }

@@ -1,6 +1,6 @@
 name: 'Custom Entity Revisions'
 type: module
 description: 'A collection of components to ease working with custom entity revisions.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Custom Entity'
 dependencies: { }

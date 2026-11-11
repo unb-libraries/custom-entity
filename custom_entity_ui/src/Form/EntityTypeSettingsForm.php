@@ -3,6 +3,7 @@
 namespace Drupal\custom_entity_ui\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -39,9 +40,11 @@ class EntityTypeSettingsForm extends ConfigFormBase implements EntityTypeSetting
    *   An entity type.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
+   *   The typed config manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, ConfigFactoryInterface $config_factory) {
-    parent::__construct($config_factory);
+  public function __construct(EntityTypeInterface $entity_type, ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager) {
+    parent::__construct($config_factory, $typed_config_manager);
     $this->entityType = $entity_type;
   }
 
@@ -59,7 +62,7 @@ class EntityTypeSettingsForm extends ConfigFormBase implements EntityTypeSetting
     /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
     $config_factory = $container->get('config.factory');
 
-    return new static($entity_type, $config_factory);
+    return new static($entity_type, $config_factory, $container->get('config.typed'));
   }
 
   /**

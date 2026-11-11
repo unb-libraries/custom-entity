@@ -74,7 +74,7 @@ class EntityAccessControlHandler extends DefaultEntityAccessControlHandler {
    *   "edit node:page entities" or "edit node entities". If no bundle is provided, TRUE is returned if the latter
    *   permission exists for the given account.
    */
-  protected function hasEntityTypePermission(string $operation, AccountInterface $account, EntityTypeInterface $entity_type, ConfigEntityInterface $bundle = NULL) {
+  protected function hasEntityTypePermission(string $operation, AccountInterface $account, EntityTypeInterface $entity_type, ?ConfigEntityInterface $bundle = NULL) {
     $entity_permission = "$operation {$entity_type->id()} entities";
     if ($bundle) {
       $bundle_permission = "$operation {$entity_type->id()}:{$bundle->id()} entities";

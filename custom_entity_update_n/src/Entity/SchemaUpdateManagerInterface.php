@@ -16,7 +16,7 @@ interface SchemaUpdateManagerInterface {
    *
    * @throws \Drupal\Core\Utility\UpdateException
    */
-  public function installBaseField(string $field_id, string $entity_type_id, string $bundle = NULL);
+  public function installBaseField(string $field_id, string $entity_type_id, ?string $bundle = NULL);
 
   /**
    * Uninstall an entity field.

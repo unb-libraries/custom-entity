@@ -1,6 +1,6 @@
 name: 'Custom Entity Events'
 type: module
 description: 'Dispatch and subscribe to custom entity events.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Custom Entity'
 dependencies: { }

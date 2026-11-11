@@ -25,7 +25,7 @@ interface DataUpdateManagerInterface {
    * @param string|null $bundle
    *   (optional) An entity bundle.
    */
-  public function set(string $field_id, string $entity_type_id, array $values, array $only = [], string $bundle = NULL);
+  public function set(string $field_id, string $entity_type_id, array $values, array $only = [], ?string $bundle = NULL);
 
   /**
    * Copies data from one field to another.
@@ -43,7 +43,7 @@ interface DataUpdateManagerInterface {
    *     - start_transaction: (bool) Whether to start a new transaction
    *     when executing the migration. Defaults to FALSE.
    */
-  public function copy(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, array $options = []);
+  public function copy(string $source_field_id, string $target_field_id, string $entity_type_id, ?string $bundle = NULL, array $options = []);
 
   /**
    * Copies data from one field to another.
@@ -61,7 +61,7 @@ interface DataUpdateManagerInterface {
    *     - start_transaction: (bool) Whether to start a new transaction
    *     when executing the migration. Defaults to TRUE.
    */
-  public function move(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, array $options = []);
+  public function move(string $source_field_id, string $target_field_id, string $entity_type_id, ?string $bundle = NULL, array $options = []);
 
   /**
    * Deletes field data.
@@ -77,6 +77,6 @@ interface DataUpdateManagerInterface {
    *     - start_transaction: (bool) Whether to start a new transaction
    *     when executing the migration. Defaults to TRUE.
    */
-  public function delete(string $field_id, string $entity_type_id, string $bundle = NULL, array $options = []);
+  public function delete(string $field_id, string $entity_type_id, ?string $bundle = NULL, array $options = []);
 
 }

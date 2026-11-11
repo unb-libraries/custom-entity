@@ -1,7 +1,7 @@
 name: 'Custom Entity Mail'
 type: module
 description: 'Send emails upon creating, editing, deleting custom entities.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Custom Entity'
 dependencies:
   - custom_entity_events

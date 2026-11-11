@@ -26,7 +26,7 @@ trait FieldUiOperationsBuilder {
    * @return array
    *   A renderable operations links array.
    */
-  protected function getFieldUiOperations(EntityTypeInterface $entity_type, ConfigEntityInterface $bundle = NULL) {
+  protected function getFieldUiOperations(EntityTypeInterface $entity_type, ?ConfigEntityInterface $bundle = NULL) {
     $operations = [];
 
     if (!$field_ui_base_route_name = $entity_type->get('field_ui_base_route')) {

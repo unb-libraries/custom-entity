@@ -82,7 +82,7 @@ class SchemaUpdateManager implements SchemaUpdateManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function installBaseField(string $field_id, string $entity_type_id, string $bundle = NULL) {
+  public function installBaseField(string $field_id, string $entity_type_id, ?string $bundle = NULL) {
     $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
 
     // This is not entirely correct: original baseFieldDefinition could change by the time schema update is done.

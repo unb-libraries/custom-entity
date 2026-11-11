@@ -60,7 +60,7 @@ class SchemaUpdateMappingFactory implements SchemaUpdateMappingFactoryInterface 
   /**
    * {@inheritDoc}
    */
-  public function createSchema(string $field_id, string $entity_type_id, string $bundle = NULL) {
+  public function createSchema(string $field_id, string $entity_type_id, ?string $bundle = NULL) {
     $tables = [$this->deriveTableName($field_id, $entity_type_id)];
     $columns = $this->buildPropertyMap($field_id, $entity_type_id);
     $keys = [$tables[0] => $this->derivePrimaryKey($field_id, $entity_type_id)];
@@ -81,7 +81,7 @@ class SchemaUpdateMappingFactory implements SchemaUpdateMappingFactoryInterface 
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\Sql\SqlContentEntityStorageException
    */
-  public function create(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL) {
+  public function create(string $source_field_id, string $target_field_id, string $entity_type_id, ?string $bundle = NULL) {
     $mappings = [$this->doCreate($source_field_id, $target_field_id, $entity_type_id, $bundle)];
     if ($this->isRevisionable($source_field_id, $entity_type_id) && $this->isRevisionable($target_field_id, $entity_type_id)) {
       $mappings[] = $this->doCreate($source_field_id, $target_field_id, $entity_type_id, $bundle, TRUE);
@@ -108,7 +108,7 @@ class SchemaUpdateMappingFactory implements SchemaUpdateMappingFactoryInterface 
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\Sql\SqlContentEntityStorageException
    */
-  protected function doCreate(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, $revision = FALSE) {
+  protected function doCreate(string $source_field_id, string $target_field_id, string $entity_type_id, ?string $bundle = NULL, $revision = FALSE) {
     $source_table = $this->deriveTableName($source_field_id, $entity_type_id, $revision);
     $target_table = $this->deriveTableName($target_field_id, $entity_type_id, $revision);
 

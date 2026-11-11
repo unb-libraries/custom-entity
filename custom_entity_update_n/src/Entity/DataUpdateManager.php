@@ -103,7 +103,7 @@ class DataUpdateManager implements DataUpdateManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function set(string $field_id, string $entity_type_id, array $values, array $only = [], string $bundle = NULL) {
+  public function set(string $field_id, string $entity_type_id, array $values, array $only = [], ?string $bundle = NULL) {
     $schema = $this->schemaUpdateMappingFactory()->createSchema($field_id, $entity_type_id, $bundle);
 
     $rows_updated = 0;
@@ -130,7 +130,7 @@ class DataUpdateManager implements DataUpdateManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function copy(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, array $options = []) {
+  public function copy(string $source_field_id, string $target_field_id, string $entity_type_id, ?string $bundle = NULL, array $options = []) {
     $mappings = $this->schemaUpdateMappingFactory()->create($source_field_id, $target_field_id, $entity_type_id);
     foreach ($mappings as $mapping) {
       $data = $this->db()
@@ -166,7 +166,7 @@ class DataUpdateManager implements DataUpdateManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function move(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL, array $options = []) {
+  public function move(string $source_field_id, string $target_field_id, string $entity_type_id, ?string $bundle = NULL, array $options = []) {
     $this->copy($source_field_id, $target_field_id, $entity_type_id);
     $this->delete($source_field_id, $entity_type_id);
   }
@@ -174,7 +174,7 @@ class DataUpdateManager implements DataUpdateManagerInterface {
   /**
    * {@inheritDoc}
    */
-  public function delete(string $field_id, string $entity_type_id, string $bundle = NULL, array $options = []) {
+  public function delete(string $field_id, string $entity_type_id, ?string $bundle = NULL, array $options = []) {
     /** @var \Drupal\Core\Entity\Sql\SqlEntityStorageInterface $storage */
     $storage = $this->entityTypeManager()->getStorage($entity_type_id);
 

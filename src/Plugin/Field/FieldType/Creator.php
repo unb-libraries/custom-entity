@@ -50,7 +50,7 @@ class Creator extends EntityReferenceItem {
   /**
    * {@inheritDoc}
    */
-  public function __construct(DataDefinitionInterface $definition, $name = NULL, TypedDataInterface $parent = NULL) {
+  public function __construct(DataDefinitionInterface $definition, $name = NULL, ?TypedDataInterface $parent = NULL) {
     parent::__construct($definition, $name, $parent);
     // @todo Use proper dependency injection once field types support it.
     $this->currentUser = \Drupal::currentUser();

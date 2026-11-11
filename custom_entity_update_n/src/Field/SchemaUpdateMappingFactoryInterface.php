@@ -20,7 +20,7 @@ interface SchemaUpdateMappingFactoryInterface {
    * @return \Drupal\custom_entity_update_n\Field\SchemaInterface
    *   A field schema object.
    */
-  public function createSchema(string $field_id, string $entity_type_id, string $bundle = NULL);
+  public function createSchema(string $field_id, string $entity_type_id, ?string $bundle = NULL);
 
   /**
    * Creates a field mapping between source and target field of the given entity and bundle.
@@ -37,6 +37,6 @@ interface SchemaUpdateMappingFactoryInterface {
    * @return \Drupal\custom_entity_update_n\Field\SchemaUpdateMappingInterface[]
    *   A field mapping instance.
    */
-  public function create(string $source_field_id, string $target_field_id, string $entity_type_id, string $bundle = NULL);
+  public function create(string $source_field_id, string $target_field_id, string $entity_type_id, ?string $bundle = NULL);
 
 }

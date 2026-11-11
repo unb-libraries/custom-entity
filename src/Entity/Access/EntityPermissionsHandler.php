@@ -121,7 +121,7 @@ class EntityPermissionsHandler extends EntityHandlerBase implements EntityPermis
    *   A permission identifier of the form
    *   "{OPERATION} {ENTITY_TYPE_ID} entities".
    */
-  protected function buildPermissionKey(string $operation, ConfigEntityInterface $bundle = NULL) {
+  protected function buildPermissionKey(string $operation, ?ConfigEntityInterface $bundle = NULL) {
     return $bundle
       ? "$operation {$this->getEntityType()->id()}:{$bundle->id()} entities"
       : "$operation {$this->getEntityType()->id()} entities";
@@ -143,7 +143,7 @@ class EntityPermissionsHandler extends EntityHandlerBase implements EntityPermis
    *   appear in the user interface. Defaults to the module providing the
    *   entity type.
    */
-  protected function buildPermission(string $operation, ConfigEntityInterface $bundle = NULL) {
+  protected function buildPermission(string $operation, ?ConfigEntityInterface $bundle = NULL) {
     $provider = $this
       ->getEntityType()
       ->getProvider();
