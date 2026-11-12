@@ -4,5 +4,4 @@ description: 'The module provides an administration UI for custom entity types.'
 core_version_requirement: ^9 || ^10
 package: 'Custom Entity'
 dependencies:
-  - field_ui
   - token
